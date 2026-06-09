@@ -1,0 +1,76 @@
+export type ADRStatus = "proposed" | "accepted" | "deprecated" | "superseded";
+
+export type ImpactLevel = "high" | "medium" | "low";
+
+export type TechCategory =
+  | "frontend"
+  | "backend"
+  | "infrastructure"
+  | "data"
+  | "devops"
+  | "security"
+  | "mobile"
+  | "ai_ml";
+
+export type AssessmentVerdict = "adopt" | "trial" | "assess" | "hold";
+
+export type RoadmapPhase = "discovery" | "design" | "build" | "launch" | "scale";
+
+export type MetricTrend = "up" | "down" | "stable";
+
+export interface TechStackAssessment {
+  id: string;
+  category: TechCategory;
+  technology: string;
+  version: string;
+  verdict: AssessmentVerdict;
+  rationale: string;
+  lastEvaluated: string;
+  migrationCost: "none" | "low" | "medium" | "high";
+  teamProficiency: number; // 0-100
+}
+
+export interface ArchitectureDecision {
+  id: string;
+  title: string;
+  status: ADRStatus;
+  date: string;
+  impact: ImpactLevel;
+  context: string;
+  decision: string;
+  consequences: string;
+  supersededBy: string | null;
+}
+
+export interface RoadmapItem {
+  id: string;
+  quarter: string; // e.g. "Q1 2026"
+  initiative: string;
+  phase: RoadmapPhase;
+  progress: number; // 0-100
+  owner: string;
+  dependencies: string[];
+  riskLevel: ImpactLevel;
+}
+
+export interface TeamHealthMetric {
+  id: string;
+  name: string;
+  value: number;
+  unit: string;
+  trend: MetricTrend;
+  changePercent: number;
+  benchmark: number;
+  description: string;
+}
+
+export interface EngineeringMetric {
+  id: string;
+  name: string;
+  value: number;
+  unit: string;
+  target: number;
+  trend: MetricTrend;
+  history: number[]; // last 6 data points
+  description: string;
+}
