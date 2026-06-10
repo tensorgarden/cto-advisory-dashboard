@@ -79,3 +79,51 @@ describe("CTO Advisory Dashboard - demo data integrity", () => {
     }
   });
 });
+
+// ─── Fractional CTO domain invariants ────────────────────────────────────────
+
+describe("Fractional CTO domain invariants", () => {
+  it("covers every tech category with at least one assessment (no blind spots)", () => {
+    const coveredCategories = new Set(
+      demoTechAssessments.map((tsa) => tsa.category)
+    );
+    const expected: string[] = [
+      "frontend",
+      "backend",
+      "infrastructure",
+      "data",
+      "devops",
+      "security",
+      "mobile",
+      "ai_ml",
+    ];
+    for (const cat of expected) {
+      expect(coveredCategories.has(cat)).toBe(true);
+    }
+  });
+
+  it("roadmap dependencies referencing ADR-IDs point to existing ADRs", () => {
+    const adrIds = new Set(demoADRs.map((a) => a.id));
+    for (const item of demoRoadmap) {
+      for (const dep of item.dependencies) {
+        if (dep.startsWith("ADR-")) {
+          expect(adrIds.has(dep)).toBe(true);
+        }
+      }
+    }
+  });
+
+  it("engineering KPI history aligns with declared trend", () => {
+    for (const kpi of demoEngineeringKPIs) {
+      const h = kpi.history;
+      if (h.length < 2) continue;
+      const lastTwo = [h[h.length - 2], h[h.length - 1]];
+      if (kpi.trend === "up") {
+        expect(lastTwo[1]).toBeGreaterThanOrEqual(lastTwo[0]);
+      } else if (kpi.trend === "down") {
+        expect(lastTwo[1]).toBeLessThanOrEqual(lastTwo[0]);
+      }
+      // "stable" trend has no strict constraint — it's a judgment call
+    }
+  });
+});
