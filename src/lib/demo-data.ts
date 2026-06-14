@@ -4,6 +4,7 @@ import type {
   RoadmapItem,
   TeamHealthMetric,
   EngineeringMetric,
+  DueDiligenceFinding,
 } from "./types";
 
 // ─── 12 Architecture Decision Records ─────────────────────────────────────────
@@ -488,5 +489,94 @@ export const demoEngineeringKPIs: EngineeringMetric[] = [
     trend: "stable",
     history: [380, 350, 340, 330, 325, 320],
     description: "99th percentile API response time across all endpoints",
+  },
+];
+
+// ─── 6 Due-Diligence Findings (pre-engagement discovery) ──────────────────────
+
+export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
+  {
+    id: "dd-001",
+    domain: "delivery_health",
+    severity: "high",
+    status: "mitigating",
+    finding:
+      "Change failure rate is 4.7% but teams cannot explain incident repeat patterns with evidence — root cause taxonomy and post-incident review process are missing.",
+    impact:
+      "Recurring incidents erode customer trust and consume 12% of sprint capacity on unplanned hotfix work. Without structured post-mortems, the same failure classes repeat quarterly.",
+    recommendation:
+      "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
+    discoveredAt: "2026-06-01",
+    resolvedAt: null,
+  },
+  {
+    id: "dd-002",
+    domain: "architecture_dependency",
+    severity: "critical",
+    status: "open",
+    finding:
+      "Order-processing service has an undocumented runtime dependency on a third-party address-validation API with no circuit breaker or fallback — discovered only during a production outage.",
+    impact:
+      "A single vendor API degradation blocks the entire checkout flow. No timeout or fallback means every request hangs until the upstream TCP connection times out at 30 seconds.",
+    recommendation:
+      "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Ship within 1 sprint.",
+    discoveredAt: "2026-06-03",
+    resolvedAt: null,
+  },
+  {
+    id: "dd-003",
+    domain: "security_supply_chain",
+    severity: "high",
+    status: "open",
+    finding:
+      "CI/CD pipeline secrets are stored in repository-level GitHub Secrets but any maintainer can modify the workflow YAML to exfiltrate them in a build step — no branch-protection rules or required reviews on workflow changes.",
+    impact:
+      "A compromised personal access token or a malicious workflow edit could expose production credentials, database connection strings, and deployment keys to any actor with write access.",
+    recommendation:
+      "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes.",
+    discoveredAt: "2026-05-28",
+    resolvedAt: null,
+  },
+  {
+    id: "dd-004",
+    domain: "data_ai_governance",
+    severity: "medium",
+    status: "mitigating",
+    finding:
+      "Customer-support chatbot (GPT-4o pilot) generates responses that occasionally include hallucinated policy details — no verification gate, no confidence threshold, and no human-review escalation path for low-certainty answers.",
+    impact:
+      "One observed hallucination invented a refund window that contradicted the published terms. Without guardrails, customer-facing AI output creates compliance and trust risk at scale.",
+    recommendation:
+      "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
+    discoveredAt: "2026-06-05",
+    resolvedAt: null,
+  },
+  {
+    id: "dd-005",
+    domain: "operational_resilience",
+    severity: "medium",
+    status: "open",
+    finding:
+      "On-call rotation covers only the backend team — frontend and data-platform incidents have no defined escalation path. Weekend incidents in those areas wait until Monday unless someone notices Slack.",
+    impact:
+      "Mean time to acknowledge (MTTA) for non-backend incidents is unbounded. Last quarter, a data-pipeline stall went undetected for 14 hours, delaying customer-facing analytics dashboards.",
+    recommendation:
+      "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a tabletop exercise within 30 days.",
+    discoveredAt: "2026-06-02",
+    resolvedAt: null,
+  },
+  {
+    id: "dd-006",
+    domain: "leadership_accountability",
+    severity: "low",
+    status: "accepted",
+    finding:
+      "No formal decision-making framework (DACI/RAPID) is used for architecture or roadmap choices — decisions are made in ad-hoc Slack threads without documented rationale or assigned accountability.",
+    impact:
+      "ADR-009 (monorepo with Turborepo) was reversed by ADR-012 (Nx migration) within 12 months. Team reports context-switching fatigue because decisions lack visible owners and committed review dates.",
+    recommendation:
+      "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
+    discoveredAt: "2026-05-30",
+    resolvedAt: "2026-06-10",
   },
 ];

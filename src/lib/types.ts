@@ -74,3 +74,27 @@ export interface EngineeringMetric {
   history: number[]; // last 6 data points
   description: string;
 }
+
+export type DueDiligenceDomain =
+  | "delivery_health"
+  | "architecture_dependency"
+  | "security_supply_chain"
+  | "data_ai_governance"
+  | "operational_resilience"
+  | "leadership_accountability";
+
+export type FindingSeverity = "critical" | "high" | "medium" | "low";
+
+export type FindingStatus = "open" | "mitigating" | "resolved" | "accepted";
+
+export interface DueDiligenceFinding {
+  id: string;
+  domain: DueDiligenceDomain;
+  severity: FindingSeverity;
+  status: FindingStatus;
+  finding: string;
+  impact: string;
+  recommendation: string;
+  discoveredAt: string;
+  resolvedAt: string | null;
+}

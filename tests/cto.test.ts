@@ -5,6 +5,7 @@ import {
   demoRoadmap,
   demoTeamHealth,
   demoEngineeringKPIs,
+  demoDueDiligenceFindings,
 } from "@/lib/demo-data";
 
 describe("CTO Advisory Dashboard - demo data integrity", () => {
@@ -124,6 +125,59 @@ describe("Fractional CTO domain invariants", () => {
         expect(lastTwo[1]).toBeLessThanOrEqual(lastTwo[0]);
       }
       // "stable" trend has no strict constraint — it's a judgment call
+    }
+  });
+});
+
+// ─── Due-diligence finding domain invariants ──────────────────────────────────
+
+describe("Due-diligence findings", () => {
+  it("has exactly 6 findings covering every diligence domain", () => {
+    expect(demoDueDiligenceFindings.length).toBe(6);
+    const domains = new Set(demoDueDiligenceFindings.map((f) => f.domain));
+    const expected: string[] = [
+      "delivery_health",
+      "architecture_dependency",
+      "security_supply_chain",
+      "data_ai_governance",
+      "operational_resilience",
+      "leadership_accountability",
+    ];
+    for (const domain of expected) {
+      expect(domains.has(domain)).toBe(true);
+    }
+  });
+
+  it("every finding has a valid status and severity", () => {
+    const validStatuses = ["open", "mitigating", "resolved", "accepted"];
+    const validSeverities = ["critical", "high", "medium", "low"];
+    for (const f of demoDueDiligenceFindings) {
+      expect(validStatuses).toContain(f.status);
+      expect(validSeverities).toContain(f.severity);
+    }
+  });
+
+  it("resolved findings have a non-null resolvedAt date", () => {
+    for (const f of demoDueDiligenceFindings) {
+      if (f.status === "resolved" || f.status === "accepted") {
+        expect(f.resolvedAt).toBeTruthy();
+      }
+    }
+  });
+
+  it("open and mitigating findings have no resolvedAt date", () => {
+    for (const f of demoDueDiligenceFindings) {
+      if (f.status === "open" || f.status === "mitigating") {
+        expect(f.resolvedAt).toBeNull();
+      }
+    }
+  });
+
+  it("critical and high-severity findings include concrete recommendation text", () => {
+    for (const f of demoDueDiligenceFindings) {
+      if (f.severity === "critical" || f.severity === "high") {
+        expect(f.recommendation.length).toBeGreaterThan(50);
+      }
     }
   });
 });
