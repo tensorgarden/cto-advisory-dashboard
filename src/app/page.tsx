@@ -4,6 +4,7 @@ import {
   demoRoadmap,
   demoTeamHealth,
   demoEngineeringKPIs,
+  demoDueDiligenceFindings,
 } from "@/lib/demo-data";
 import type {
   ArchitectureDecision,
@@ -11,6 +12,7 @@ import type {
   RoadmapItem,
   TeamHealthMetric,
   EngineeringMetric,
+  DueDiligenceFinding,
 } from "@/lib/types";
 
 // ═══ Reusable components ═══════════════════════════════════════════════════════
@@ -511,6 +513,96 @@ function EngineeringKPISection() {
   );
 }
 
+// ═══ Investor Due-Diligence Readiness ═════════════════════════════════════════
+
+function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
+  const severityTone: Record<DueDiligenceFinding["severity"], "red" | "amber" | "slate"> = {
+    critical: "red",
+    high: "red",
+    medium: "amber",
+    low: "slate",
+  };
+  const statusTone: Record<DueDiligenceFinding["status"], "red" | "amber" | "green" | "slate"> = {
+    open: "red",
+    mitigating: "amber",
+    resolved: "green",
+    accepted: "slate",
+  };
+  const domainLabel = finding.domain.replace(/_/g, " ");
+
+  return (
+    <div className="rounded-2xl border border-slate-100 bg-white/90 p-4 shadow-sm">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          {domainLabel}
+        </span>
+        <Badge tone={severityTone[finding.severity]}>{finding.severity}</Badge>
+        <Badge tone={statusTone[finding.status]}>{finding.status}</Badge>
+      </div>
+      <p className="text-sm font-semibold text-slate-900">{finding.finding}</p>
+      <p className="mt-2 text-xs text-slate-500">
+        <span className="font-semibold text-slate-700">Remediation: </span>
+        {finding.recommendation}
+      </p>
+    </div>
+  );
+}
+
+function DiligenceReadinessSection() {
+  const activeFindings = demoDueDiligenceFindings.filter(
+    (finding) => finding.status === "open" || finding.status === "mitigating"
+  );
+  const investorBlockingFindings = activeFindings.filter(
+    (finding) => finding.severity === "critical" || finding.severity === "high"
+  );
+  const coveredDomains = new Set(demoDueDiligenceFindings.map((finding) => finding.domain));
+
+  return (
+    <Card>
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-lg font-bold text-slate-900">
+            Investor Diligence Readiness
+          </h2>
+          <p className="mt-1 max-w-3xl text-sm text-slate-500">
+            Pre-dataroom view of risks investors ask about: architecture,
+            security, data governance, operational resilience, and accountable
+            remediation plans.
+          </p>
+        </div>
+        <Badge tone={investorBlockingFindings.length > 0 ? "red" : "green"}>
+          {investorBlockingFindings.length} blocking risks
+        </Badge>
+      </div>
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <StatCard
+          label="Active Findings"
+          value={String(activeFindings.length)}
+          tone={activeFindings.length > 0 ? "amber" : "green"}
+          subtitle="open or mitigating"
+        />
+        <StatCard
+          label="Diligence Domains"
+          value={String(coveredDomains.size)}
+          tone="indigo"
+          subtitle="covered in discovery"
+        />
+        <StatCard
+          label="Critical / High"
+          value={String(investorBlockingFindings.length)}
+          tone={investorBlockingFindings.length > 0 ? "red" : "green"}
+          subtitle="needs executive attention"
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        {activeFindings.slice(0, 3).map((finding) => (
+          <DiligenceFindingCard key={finding.id} finding={finding} />
+        ))}
+      </div>
+    </Card>
+  );
+}
+
 // ═══ Main Page ════════════════════════════════════════════════════════════════
 
 export default function Home() {
@@ -560,6 +652,11 @@ export default function Home() {
           tone="green"
           subtitle="pts / sprint"
         />
+      </div>
+
+      {/* Investor diligence readiness */}
+      <div className="mb-8">
+        <DiligenceReadinessSection />
       </div>
 
       {/* ADR Table + Tech Stack */}

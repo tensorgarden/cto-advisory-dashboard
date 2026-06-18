@@ -7,6 +7,7 @@ import {
   demoEngineeringKPIs,
   demoDueDiligenceFindings,
 } from "@/lib/demo-data";
+import type { DueDiligenceDomain, TechCategory } from "@/lib/types";
 
 describe("CTO Advisory Dashboard - demo data integrity", () => {
   it("has exactly 12 ADRs", () => {
@@ -88,7 +89,7 @@ describe("Fractional CTO domain invariants", () => {
     const coveredCategories = new Set(
       demoTechAssessments.map((tsa) => tsa.category)
     );
-    const expected: string[] = [
+    const expected: TechCategory[] = [
       "frontend",
       "backend",
       "infrastructure",
@@ -135,7 +136,7 @@ describe("Due-diligence findings", () => {
   it("has exactly 6 findings covering every diligence domain", () => {
     expect(demoDueDiligenceFindings.length).toBe(6);
     const domains = new Set(demoDueDiligenceFindings.map((f) => f.domain));
-    const expected: string[] = [
+    const expected: DueDiligenceDomain[] = [
       "delivery_health",
       "architecture_dependency",
       "security_supply_chain",
