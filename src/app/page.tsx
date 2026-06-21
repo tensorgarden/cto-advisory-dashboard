@@ -544,6 +544,28 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
         <span className="font-semibold text-slate-700">Remediation: </span>
         {finding.recommendation}
       </p>
+      <div className="mt-3 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
+        <div className="font-semibold text-slate-700">Dataroom readiness</div>
+        <dl className="mt-2 space-y-1">
+          <div className="flex gap-2">
+            <dt className="min-w-20 font-semibold text-slate-500">Owner</dt>
+            <dd>{finding.executiveOwner}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="min-w-20 font-semibold text-slate-500">Evidence</dt>
+            <dd>{finding.evidenceArtifact}</dd>
+          </div>
+          <div className="flex gap-2">
+            <dt className="min-w-20 font-semibold text-slate-500">Target</dt>
+            <dd>
+              {new Date(finding.targetRemediationDate).toLocaleDateString(
+                "en-US",
+                { month: "short", day: "numeric", year: "numeric" }
+              )}
+            </dd>
+          </div>
+        </dl>
+      </div>
     </div>
   );
 }

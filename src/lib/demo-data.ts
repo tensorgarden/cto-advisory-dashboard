@@ -506,6 +506,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Recurring incidents erode customer trust and consume 12% of sprint capacity on unplanned hotfix work. Without structured post-mortems, the same failure classes repeat quarterly.",
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
+    executiveOwner: "VP Engineering",
+    evidenceArtifact: "Incident taxonomy pilot board memo with P1/P2 RCA template and trend extract",
+    targetRemediationDate: "2026-06-21",
     discoveredAt: "2026-06-01",
     resolvedAt: null,
   },
@@ -520,6 +523,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "A single vendor API degradation blocks the entire checkout flow. No timeout or fallback means every request hangs until the upstream TCP connection times out at 30 seconds.",
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Ship within 1 sprint.",
+    executiveOwner: "Head of Platform",
+    evidenceArtifact: "Checkout dependency map, address-validation runbook, and degraded-mode fallback plan",
+    targetRemediationDate: "2026-06-17",
     discoveredAt: "2026-06-03",
     resolvedAt: null,
   },
@@ -534,6 +540,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "A compromised personal access token or a malicious workflow edit could expose production credentials, database connection strings, and deployment keys to any actor with write access.",
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes.",
+    executiveOwner: "CISO Office",
+    evidenceArtifact: "Workflow-change control evidence pack with branch-protection screenshot and action pinning register",
+    targetRemediationDate: "2026-06-24",
     discoveredAt: "2026-05-28",
     resolvedAt: null,
   },
@@ -548,6 +557,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "One observed hallucination invented a refund window that contradicted the published terms. Without guardrails, customer-facing AI output creates compliance and trust risk at scale.",
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
+    executiveOwner: "Head of Customer Experience",
+    evidenceArtifact: "AI response QA sample, low-confidence escalation SOP, and published disclosure draft",
+    targetRemediationDate: "2026-06-28",
     discoveredAt: "2026-06-05",
     resolvedAt: null,
   },
@@ -562,6 +574,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Mean time to acknowledge (MTTA) for non-backend incidents is unbounded. Last quarter, a data-pipeline stall went undetected for 14 hours, delaying customer-facing analytics dashboards.",
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a tabletop exercise within 30 days.",
+    executiveOwner: "Director of Engineering Operations",
+    evidenceArtifact: "On-call coverage matrix, escalation policy draft, and tabletop exercise agenda",
+    targetRemediationDate: "2026-07-02",
     discoveredAt: "2026-06-02",
     resolvedAt: null,
   },
@@ -576,6 +591,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "ADR-009 (monorepo with Turborepo) was reversed by ADR-012 (Nx migration) within 12 months. Team reports context-switching fatigue because decisions lack visible owners and committed review dates.",
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
+    executiveOwner: "CTO",
+    evidenceArtifact: "RAPID decision log template plus ADR ownership register",
+    targetRemediationDate: "2026-06-10",
     discoveredAt: "2026-05-30",
     resolvedAt: "2026-06-10",
   },

@@ -95,6 +95,9 @@ export interface DueDiligenceFinding {
   finding: string;
   impact: string;
   recommendation: string;
+  executiveOwner: string;
+  evidenceArtifact: string;
+  targetRemediationDate: string;
   discoveredAt: string;
   resolvedAt: string | null;
 }

@@ -181,4 +181,30 @@ describe("Due-diligence findings", () => {
       }
     }
   });
+
+  it("keeps every finding tied to dataroom evidence and an owner", () => {
+    for (const f of demoDueDiligenceFindings) {
+      expect(f.executiveOwner.length).toBeGreaterThan(2);
+      expect(f.evidenceArtifact.length).toBeGreaterThan(30);
+      expect(Number.isNaN(Date.parse(f.targetRemediationDate))).toBe(false);
+      expect(Date.parse(f.targetRemediationDate)).toBeGreaterThanOrEqual(
+        Date.parse(f.discoveredAt)
+      );
+    }
+  });
+
+  it("gives active investor-blocking findings a near-term remediation target", () => {
+    for (const f of demoDueDiligenceFindings) {
+      const isActive = f.status === "open" || f.status === "mitigating";
+      const isBlocking = f.severity === "critical" || f.severity === "high";
+
+      if (isActive && isBlocking) {
+        const days =
+          (Date.parse(f.targetRemediationDate) - Date.parse(f.discoveredAt)) /
+          (1000 * 60 * 60 * 24);
+
+        expect(days).toBeLessThanOrEqual(30);
+      }
+    }
+  });
 });
