@@ -528,6 +528,16 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
     resolved: "green",
     accepted: "slate",
   };
+  const materialityTone: Record<DueDiligenceFinding["investorMateriality"], "red" | "amber" | "slate"> = {
+    blocking: "red",
+    watchlist: "amber",
+    low: "slate",
+  };
+  const dataroomTone: Record<DueDiligenceFinding["dataroomStatus"], "red" | "amber" | "green"> = {
+    missing: "red",
+    partial: "amber",
+    ready: "green",
+  };
   const domainLabel = finding.domain.replace(/_/g, " ");
 
   return (
@@ -538,14 +548,26 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
         </span>
         <Badge tone={severityTone[finding.severity]}>{finding.severity}</Badge>
         <Badge tone={statusTone[finding.status]}>{finding.status}</Badge>
+        <Badge tone={materialityTone[finding.investorMateriality]}>
+          {finding.investorMateriality}
+        </Badge>
       </div>
       <p className="text-sm font-semibold text-slate-900">{finding.finding}</p>
+      <p className="mt-2 text-xs text-slate-500">
+        <span className="font-semibold text-slate-700">Investor ask: </span>
+        {finding.investorQuestion}
+      </p>
       <p className="mt-2 text-xs text-slate-500">
         <span className="font-semibold text-slate-700">Remediation: </span>
         {finding.recommendation}
       </p>
       <div className="mt-3 rounded-xl bg-slate-50 p-3 text-xs text-slate-600">
-        <div className="font-semibold text-slate-700">Dataroom readiness</div>
+        <div className="flex items-center justify-between gap-2">
+          <div className="font-semibold text-slate-700">Dataroom readiness</div>
+          <Badge tone={dataroomTone[finding.dataroomStatus]}>
+            {finding.dataroomStatus}
+          </Badge>
+        </div>
         <dl className="mt-2 space-y-1">
           <div className="flex gap-2">
             <dt className="min-w-20 font-semibold text-slate-500">Owner</dt>
@@ -575,7 +597,7 @@ function DiligenceReadinessSection() {
     (finding) => finding.status === "open" || finding.status === "mitigating"
   );
   const investorBlockingFindings = activeFindings.filter(
-    (finding) => finding.severity === "critical" || finding.severity === "high"
+    (finding) => finding.investorMateriality === "blocking"
   );
   const coveredDomains = new Set(demoDueDiligenceFindings.map((finding) => finding.domain));
 
@@ -610,10 +632,10 @@ function DiligenceReadinessSection() {
           subtitle="covered in discovery"
         />
         <StatCard
-          label="Critical / High"
+          label="Investor-Blocking"
           value={String(investorBlockingFindings.length)}
           tone={investorBlockingFindings.length > 0 ? "red" : "green"}
-          subtitle="needs executive attention"
+          subtitle="explicit materiality tag"
         />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">

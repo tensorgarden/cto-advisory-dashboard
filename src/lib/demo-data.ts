@@ -504,6 +504,10 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Change failure rate is 4.7% but teams cannot explain incident repeat patterns with evidence — root cause taxonomy and post-incident review process are missing.",
     impact:
       "Recurring incidents erode customer trust and consume 12% of sprint capacity on unplanned hotfix work. Without structured post-mortems, the same failure classes repeat quarterly.",
+    investorQuestion:
+      "Can management prove repeat production incidents have root causes, assigned owners, and trend evidence before investor diligence?",
+    investorMateriality: "blocking",
+    dataroomStatus: "partial",
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -521,6 +525,10 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Order-processing service has an undocumented runtime dependency on a third-party address-validation API with no circuit breaker or fallback — discovered only during a production outage.",
     impact:
       "A single vendor API degradation blocks the entire checkout flow. No timeout or fallback means every request hangs until the upstream TCP connection times out at 30 seconds.",
+    investorQuestion:
+      "Can the company prove revenue-critical vendor dependencies have fallbacks before diligence exposes a single-point-of-failure risk?",
+    investorMateriality: "blocking",
+    dataroomStatus: "partial",
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Ship within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -538,6 +546,10 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "CI/CD pipeline secrets are stored in repository-level GitHub Secrets but any maintainer can modify the workflow YAML to exfiltrate them in a build step — no branch-protection rules or required reviews on workflow changes.",
     impact:
       "A compromised personal access token or a malicious workflow edit could expose production credentials, database connection strings, and deployment keys to any actor with write access.",
+    investorQuestion:
+      "Can leadership substantiate cybersecurity maturity with protected workflow controls instead of self-attested scanner coverage?",
+    investorMateriality: "blocking",
+    dataroomStatus: "missing",
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes.",
     executiveOwner: "CISO Office",
@@ -555,6 +567,10 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Customer-support chatbot (GPT-4o pilot) generates responses that occasionally include hallucinated policy details — no verification gate, no confidence threshold, and no human-review escalation path for low-certainty answers.",
     impact:
       "One observed hallucination invented a refund window that contradicted the published terms. Without guardrails, customer-facing AI output creates compliance and trust risk at scale.",
+    investorQuestion:
+      "Can the team show AI customer-response controls, confidence thresholds, and human review before scaling the pilot?",
+    investorMateriality: "watchlist",
+    dataroomStatus: "partial",
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
     executiveOwner: "Head of Customer Experience",
@@ -572,6 +588,10 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "On-call rotation covers only the backend team — frontend and data-platform incidents have no defined escalation path. Weekend incidents in those areas wait until Monday unless someone notices Slack.",
     impact:
       "Mean time to acknowledge (MTTA) for non-backend incidents is unbounded. Last quarter, a data-pipeline stall went undetected for 14 hours, delaying customer-facing analytics dashboards.",
+    investorQuestion:
+      "Can operations prove every production surface has named responders, escalation evidence, and tabletop rehearsal coverage?",
+    investorMateriality: "watchlist",
+    dataroomStatus: "partial",
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a tabletop exercise within 30 days.",
     executiveOwner: "Director of Engineering Operations",
@@ -589,6 +609,10 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "No formal decision-making framework (DACI/RAPID) is used for architecture or roadmap choices — decisions are made in ad-hoc Slack threads without documented rationale or assigned accountability.",
     impact:
       "ADR-009 (monorepo with Turborepo) was reversed by ADR-012 (Nx migration) within 12 months. Team reports context-switching fatigue because decisions lack visible owners and committed review dates.",
+    investorQuestion:
+      "Can the CTO show decision ownership, review cadence, and governance evidence for major technical direction changes?",
+    investorMateriality: "low",
+    dataroomStatus: "ready",
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",

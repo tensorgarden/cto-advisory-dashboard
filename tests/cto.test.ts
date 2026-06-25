@@ -7,7 +7,12 @@ import {
   demoEngineeringKPIs,
   demoDueDiligenceFindings,
 } from "@/lib/demo-data";
-import type { DueDiligenceDomain, TechCategory } from "@/lib/types";
+import type {
+  DataroomStatus,
+  DueDiligenceDomain,
+  InvestorMateriality,
+  TechCategory,
+} from "@/lib/types";
 
 describe("CTO Advisory Dashboard - demo data integrity", () => {
   it("has exactly 12 ADRs", () => {
@@ -155,6 +160,39 @@ describe("Due-diligence findings", () => {
     for (const f of demoDueDiligenceFindings) {
       expect(validStatuses).toContain(f.status);
       expect(validSeverities).toContain(f.severity);
+    }
+  });
+
+  it("tags every finding with investor materiality and dataroom status", () => {
+    const validMateriality: InvestorMateriality[] = [
+      "blocking",
+      "watchlist",
+      "low",
+    ];
+    const validDataroomStatuses: DataroomStatus[] = [
+      "missing",
+      "partial",
+      "ready",
+    ];
+
+    for (const f of demoDueDiligenceFindings) {
+      expect(validMateriality).toContain(f.investorMateriality);
+      expect(validDataroomStatuses).toContain(f.dataroomStatus);
+      expect(f.investorQuestion.length).toBeGreaterThan(50);
+      expect(f.investorQuestion.endsWith("?")).toBe(true);
+    }
+  });
+
+  it("keeps active investor-blocking findings from looking dataroom-ready", () => {
+    const blocking = demoDueDiligenceFindings.filter(
+      (f) => f.investorMateriality === "blocking"
+    );
+
+    expect(blocking.length).toBeGreaterThan(0);
+    for (const f of blocking) {
+      expect(["critical", "high"]).toContain(f.severity);
+      expect(["open", "mitigating"]).toContain(f.status);
+      expect(f.dataroomStatus).not.toBe("ready");
     }
   });
 

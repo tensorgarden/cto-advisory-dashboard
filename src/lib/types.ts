@@ -87,6 +87,10 @@ export type FindingSeverity = "critical" | "high" | "medium" | "low";
 
 export type FindingStatus = "open" | "mitigating" | "resolved" | "accepted";
 
+export type InvestorMateriality = "blocking" | "watchlist" | "low";
+
+export type DataroomStatus = "missing" | "partial" | "ready";
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -94,6 +98,9 @@ export interface DueDiligenceFinding {
   status: FindingStatus;
   finding: string;
   impact: string;
+  investorQuestion: string;
+  investorMateriality: InvestorMateriality;
+  dataroomStatus: DataroomStatus;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;
