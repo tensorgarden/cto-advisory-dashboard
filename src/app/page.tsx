@@ -600,6 +600,9 @@ function DiligenceReadinessSection() {
     (finding) => finding.investorMateriality === "blocking"
   );
   const coveredDomains = new Set(demoDueDiligenceFindings.map((finding) => finding.domain));
+  const readyDataroomArtifacts = demoDueDiligenceFindings.filter(
+    (finding) => finding.dataroomStatus === "ready"
+  ).length;
 
   return (
     <Card>
@@ -618,7 +621,7 @@ function DiligenceReadinessSection() {
           {investorBlockingFindings.length} blocking risks
         </Badge>
       </div>
-      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-4">
         <StatCard
           label="Active Findings"
           value={String(activeFindings.length)}
@@ -636,6 +639,16 @@ function DiligenceReadinessSection() {
           value={String(investorBlockingFindings.length)}
           tone={investorBlockingFindings.length > 0 ? "red" : "green"}
           subtitle="explicit materiality tag"
+        />
+        <StatCard
+          label="Ready Artifacts"
+          value={`${readyDataroomArtifacts}/${demoDueDiligenceFindings.length}`}
+          tone={
+            readyDataroomArtifacts === demoDueDiligenceFindings.length
+              ? "green"
+              : "amber"
+          }
+          subtitle="dataroom evidence"
         />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">

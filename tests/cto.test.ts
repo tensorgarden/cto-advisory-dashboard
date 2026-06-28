@@ -196,6 +196,28 @@ describe("Due-diligence findings", () => {
     }
   });
 
+  it("keeps all active findings out of ready dataroom status", () => {
+    for (const f of demoDueDiligenceFindings) {
+      const isActive = f.status === "open" || f.status === "mitigating";
+      if (isActive) {
+        expect(f.dataroomStatus).not.toBe("ready");
+      }
+    }
+  });
+
+  it("preserves dataroom-ready examples without overstating unresolved risk", () => {
+    const readyFindings = demoDueDiligenceFindings.filter(
+      (f) => f.dataroomStatus === "ready"
+    );
+
+    expect(readyFindings.length).toBeGreaterThan(0);
+    for (const f of readyFindings) {
+      expect(["resolved", "accepted"]).toContain(f.status);
+      expect(f.resolvedAt).toBeTruthy();
+      expect(f.investorMateriality).not.toBe("blocking");
+    }
+  });
+
   it("resolved findings have a non-null resolvedAt date", () => {
     for (const f of demoDueDiligenceFindings) {
       if (f.status === "resolved" || f.status === "accepted") {
