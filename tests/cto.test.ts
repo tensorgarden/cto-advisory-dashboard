@@ -205,6 +205,47 @@ describe("Due-diligence findings", () => {
     }
   });
 
+  it("keeps 2026 investor scrutiny domains active until evidence is reviewed", () => {
+    const highScrutinyDomains: DueDiligenceDomain[] = [
+      "architecture_dependency",
+      "security_supply_chain",
+      "data_ai_governance",
+    ];
+
+    for (const domain of highScrutinyDomains) {
+      const finding = demoDueDiligenceFindings.find(
+        (f) =>
+          f.domain === domain &&
+          (f.status === "open" || f.status === "mitigating")
+      );
+
+      if (!finding) {
+        throw new Error(`${domain} should have an active diligence item`);
+      }
+
+      expect(finding.investorQuestion.endsWith("?")).toBe(true);
+      expect(finding.dataroomStatus).not.toBe("ready");
+    }
+  });
+
+  it("requires human-review controls for unresolved customer-facing AI governance risk", () => {
+    const finding = demoDueDiligenceFindings.find(
+      (f) =>
+        f.domain === "data_ai_governance" &&
+        (f.status === "open" || f.status === "mitigating")
+    );
+
+    expect(finding).toBeDefined();
+    if (!finding) return;
+
+    const controlText = `${finding.finding} ${finding.impact} ${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+
+    expect(controlText).toContain("confidence");
+    expect(controlText).toContain("human");
+    expect(controlText).toContain("disclosure");
+    expect(finding.dataroomStatus).not.toBe("ready");
+  });
+
   it("preserves dataroom-ready examples without overstating unresolved risk", () => {
     const readyFindings = demoDueDiligenceFindings.filter(
       (f) => f.dataroomStatus === "ready"
