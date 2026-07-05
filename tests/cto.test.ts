@@ -180,7 +180,39 @@ describe("Due-diligence findings", () => {
       expect(validDataroomStatuses).toContain(f.dataroomStatus);
       expect(f.investorQuestion.length).toBeGreaterThan(50);
       expect(f.investorQuestion.endsWith("?")).toBe(true);
+      expect(f.boardReadyUpdate.length).toBeGreaterThan(80);
+      expect(f.boardReadyUpdate.toLowerCase()).toContain("board");
     }
+  });
+
+  it("keeps active board updates actionable and owner-backed", () => {
+    for (const f of demoDueDiligenceFindings) {
+      const isActive = f.status === "open" || f.status === "mitigating";
+      if (!isActive) continue;
+
+      const update = f.boardReadyUpdate.toLowerCase();
+
+      expect(update).toContain("board");
+      expect(update).toMatch(/own|owner/);
+      expect(update).not.toContain("tbd");
+    }
+  });
+
+  it("escalates vendor-drag risk in the board packet for architecture dependency blockers", () => {
+    const finding = demoDueDiligenceFindings.find(
+      (f) =>
+        f.domain === "architecture_dependency" &&
+        f.investorMateriality === "blocking"
+    );
+
+    expect(finding).toBeDefined();
+    if (!finding) return;
+
+    const boardUpdate = finding.boardReadyUpdate.toLowerCase();
+
+    expect(boardUpdate).toContain("vendor");
+    expect(boardUpdate).toContain("checkout");
+    expect(finding.executiveOwner).toBe("Head of Platform");
   });
 
   it("keeps active investor-blocking findings from looking dataroom-ready", () => {

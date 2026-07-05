@@ -99,6 +99,7 @@ export interface DueDiligenceFinding {
   finding: string;
   impact: string;
   investorQuestion: string;
+  boardReadyUpdate: string;
   investorMateriality: InvestorMateriality;
   dataroomStatus: DataroomStatus;
   recommendation: string;

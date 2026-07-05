@@ -506,6 +506,8 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Recurring incidents erode customer trust and consume 12% of sprint capacity on unplanned hotfix work. Without structured post-mortems, the same failure classes repeat quarterly.",
     investorQuestion:
       "Can management prove repeat production incidents have root causes, assigned owners, and trend evidence before investor diligence?",
+    boardReadyUpdate:
+      "Board update: incident repeat patterns are now a financing-readiness blocker; VP Engineering owns the RCA taxonomy and will return with owner-by-failure-class evidence before the next board pack.",
     investorMateriality: "blocking",
     dataroomStatus: "partial",
     recommendation:
@@ -527,6 +529,8 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "A single vendor API degradation blocks the entire checkout flow. No timeout or fallback means every request hangs until the upstream TCP connection times out at 30 seconds.",
     investorQuestion:
       "Can the company prove revenue-critical vendor dependencies have fallbacks before diligence exposes a single-point-of-failure risk?",
+    boardReadyUpdate:
+      "Board update: revenue-critical vendor drag is concentrated in checkout; Head of Platform owns circuit-breaker proof and degraded-mode acceptance criteria for the next investment committee readout.",
     investorMateriality: "blocking",
     dataroomStatus: "partial",
     recommendation:
@@ -548,6 +552,8 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "A compromised personal access token or a malicious workflow edit could expose production credentials, database connection strings, and deployment keys to any actor with write access.",
     investorQuestion:
       "Can leadership substantiate cybersecurity maturity with protected workflow controls instead of self-attested scanner coverage?",
+    boardReadyUpdate:
+      "Board update: workflow-change control is the clearest security diligence gap; CISO Office owns branch-protection evidence and action-pinning register before diligence Q&A.",
     investorMateriality: "blocking",
     dataroomStatus: "missing",
     recommendation:
@@ -569,6 +575,8 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "One observed hallucination invented a refund window that contradicted the published terms. Without guardrails, customer-facing AI output creates compliance and trust risk at scale.",
     investorQuestion:
       "Can the team show AI customer-response controls, confidence thresholds, and human review before scaling the pilot?",
+    boardReadyUpdate:
+      "Board update: AI support scaling remains a watchlist item until Head of Customer Experience owns confidence thresholds, human review, and customer disclosure artifacts in the dataroom.",
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
     recommendation:
@@ -590,6 +598,8 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Mean time to acknowledge (MTTA) for non-backend incidents is unbounded. Last quarter, a data-pipeline stall went undetected for 14 hours, delaying customer-facing analytics dashboards.",
     investorQuestion:
       "Can operations prove every production surface has named responders, escalation evidence, and tabletop rehearsal coverage?",
+    boardReadyUpdate:
+      "Board update: operational resilience coverage is incomplete outside backend; Engineering Ops owns escalation coverage and tabletop rehearsal proof for the next risk review.",
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
     recommendation:
@@ -611,6 +621,8 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "ADR-009 (monorepo with Turborepo) was reversed by ADR-012 (Nx migration) within 12 months. Team reports context-switching fatigue because decisions lack visible owners and committed review dates.",
     investorQuestion:
       "Can the CTO show decision ownership, review cadence, and governance evidence for major technical direction changes?",
+    boardReadyUpdate:
+      "Board update: decision accountability is accepted as a governance process change; CTO owns the RAPID register and 6-month ADR review cadence in board materials.",
     investorMateriality: "low",
     dataroomStatus: "ready",
     recommendation:

@@ -558,6 +558,10 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
         {finding.investorQuestion}
       </p>
       <p className="mt-2 text-xs text-slate-500">
+        <span className="font-semibold text-slate-700">Board update: </span>
+        {finding.boardReadyUpdate}
+      </p>
+      <p className="mt-2 text-xs text-slate-500">
         <span className="font-semibold text-slate-700">Remediation: </span>
         {finding.recommendation}
       </p>
