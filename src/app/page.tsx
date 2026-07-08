@@ -5,6 +5,7 @@ import {
   demoTeamHealth,
   demoEngineeringKPIs,
   demoDueDiligenceFindings,
+  demoNinetyDayDiligencePlan,
 } from "@/lib/demo-data";
 import type {
   ArchitectureDecision,
@@ -654,6 +655,47 @@ function DiligenceReadinessSection() {
           }
           subtitle="dataroom evidence"
         />
+      </div>
+      <div className="mb-4 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900">
+              90-Day Remediation Plan
+            </h3>
+            <p className="mt-1 text-xs text-slate-500">
+              Converts investor findings into dated owner commitments and
+              evidence packets before the next diligence readout.
+            </p>
+          </div>
+          <Badge tone="indigo">
+            {demoNinetyDayDiligencePlan.length} owner-backed actions
+          </Badge>
+        </div>
+        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+          {demoNinetyDayDiligencePlan.slice(0, 3).map((finding) => (
+            <div
+              key={finding.id}
+              className="rounded-xl border border-white/80 bg-white/80 p-3 text-xs shadow-sm"
+            >
+              <div className="font-semibold uppercase tracking-wider text-indigo-700">
+                {finding.domain.replace(/_/g, " ")}
+              </div>
+              <div className="mt-1 font-semibold text-slate-900">
+                {finding.executiveOwner}
+              </div>
+              <div className="mt-1 text-slate-500">
+                Target: {new Date(finding.targetRemediationDate).toLocaleDateString(
+                  "en-US",
+                  { month: "short", day: "numeric", year: "numeric" }
+                )}
+              </div>
+              <div className="mt-2 text-slate-500">
+                <span className="font-semibold text-slate-700">Proof: </span>
+                {finding.evidenceArtifact}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {activeFindings.slice(0, 3).map((finding) => (

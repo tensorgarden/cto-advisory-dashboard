@@ -6,6 +6,7 @@ import {
   demoTeamHealth,
   demoEngineeringKPIs,
   demoDueDiligenceFindings,
+  demoNinetyDayDiligencePlan,
 } from "@/lib/demo-data";
 import type {
   DataroomStatus,
@@ -338,6 +339,34 @@ describe("Due-diligence findings", () => {
 
         expect(days).toBeLessThanOrEqual(30);
       }
+    }
+  });
+
+  it("builds a date-sorted 90-day remediation plan for active findings", () => {
+    expect(demoNinetyDayDiligencePlan.length).toBeGreaterThan(0);
+
+    const activeIds = new Set(
+      demoDueDiligenceFindings
+        .filter((f) => f.status === "open" || f.status === "mitigating")
+        .map((f) => f.id)
+    );
+    const targetDates = demoNinetyDayDiligencePlan.map((f) =>
+      Date.parse(f.targetRemediationDate)
+    );
+
+    expect(targetDates).toEqual([...targetDates].sort((a, b) => a - b));
+
+    for (const f of demoNinetyDayDiligencePlan) {
+      const days = Math.ceil(
+        (Date.parse(f.targetRemediationDate) - Date.parse(f.discoveredAt)) /
+          (1000 * 60 * 60 * 24)
+      );
+
+      expect(activeIds.has(f.id)).toBe(true);
+      expect(days).toBeLessThanOrEqual(90);
+      expect(f.executiveOwner.length).toBeGreaterThan(2);
+      expect(f.evidenceArtifact.length).toBeGreaterThan(30);
+      expect(f.dataroomStatus).not.toBe("ready");
     }
   });
 });

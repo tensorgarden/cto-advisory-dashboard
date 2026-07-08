@@ -634,3 +634,24 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     resolvedAt: "2026-06-10",
   },
 ];
+
+const DAY_MS = 1000 * 60 * 60 * 24;
+const NINETY_DAY_DILIGENCE_WINDOW = 90;
+
+const remediationWindowDays = (finding: DueDiligenceFinding) =>
+  Math.ceil(
+    (Date.parse(finding.targetRemediationDate) - Date.parse(finding.discoveredAt)) /
+      DAY_MS
+  );
+
+export const demoNinetyDayDiligencePlan = [...demoDueDiligenceFindings]
+  .filter(
+    (finding) => finding.status === "open" || finding.status === "mitigating"
+  )
+  .filter(
+    (finding) => remediationWindowDays(finding) <= NINETY_DAY_DILIGENCE_WINDOW
+  )
+  .sort(
+    (a, b) =>
+      Date.parse(a.targetRemediationDate) - Date.parse(b.targetRemediationDate)
+  );
