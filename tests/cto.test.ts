@@ -327,6 +327,29 @@ describe("Due-diligence findings", () => {
     }
   });
 
+  it("costs every active diligence action for investor runway planning", () => {
+    const activeFindings = demoDueDiligenceFindings.filter(
+      (finding) => finding.status === "open" || finding.status === "mitigating"
+    );
+    const planCost = demoNinetyDayDiligencePlan.reduce(
+      (total, finding) => total + finding.estimatedRemediationCostUsd,
+      0
+    );
+    const activeCost = activeFindings.reduce(
+      (total, finding) => total + finding.estimatedRemediationCostUsd,
+      0
+    );
+
+    expect(activeFindings.length).toBeGreaterThan(0);
+    expect(planCost).toBe(activeCost);
+    expect(planCost).toBeGreaterThan(0);
+
+    for (const finding of activeFindings) {
+      expect(Number.isInteger(finding.estimatedRemediationCostUsd)).toBe(true);
+      expect(finding.estimatedRemediationCostUsd).toBeGreaterThan(0);
+    }
+  });
+
   it("gives active investor-blocking findings a near-term remediation target", () => {
     for (const f of demoDueDiligenceFindings) {
       const isActive = f.status === "open" || f.status === "mitigating";

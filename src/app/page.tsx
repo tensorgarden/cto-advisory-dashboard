@@ -583,6 +583,16 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
             <dd>{finding.evidenceArtifact}</dd>
           </div>
           <div className="flex gap-2">
+            <dt className="min-w-20 font-semibold text-slate-500">Budget</dt>
+            <dd>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0,
+              }).format(finding.estimatedRemediationCostUsd)}
+            </dd>
+          </div>
+          <div className="flex gap-2">
             <dt className="min-w-20 font-semibold text-slate-500">Target</dt>
             <dd>
               {new Date(finding.targetRemediationDate).toLocaleDateString(
@@ -608,6 +618,15 @@ function DiligenceReadinessSection() {
   const readyDataroomArtifacts = demoDueDiligenceFindings.filter(
     (finding) => finding.dataroomStatus === "ready"
   ).length;
+  const ninetyDayRemediationCost = demoNinetyDayDiligencePlan.reduce(
+    (total, finding) => total + finding.estimatedRemediationCostUsd,
+    0
+  );
+  const formattedRemediationCost = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(ninetyDayRemediationCost);
 
   return (
     <Card>
@@ -626,7 +645,7 @@ function DiligenceReadinessSection() {
           {investorBlockingFindings.length} blocking risks
         </Badge>
       </div>
-      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-5">
         <StatCard
           label="Active Findings"
           value={String(activeFindings.length)}
@@ -654,6 +673,12 @@ function DiligenceReadinessSection() {
               : "amber"
           }
           subtitle="dataroom evidence"
+        />
+        <StatCard
+          label="90-Day Cost"
+          value={formattedRemediationCost}
+          tone="purple"
+          subtitle="estimated remediation"
         />
       </div>
       <div className="mb-4 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4">
