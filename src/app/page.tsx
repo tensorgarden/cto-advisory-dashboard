@@ -6,6 +6,7 @@ import {
   demoEngineeringKPIs,
   demoDueDiligenceFindings,
   demoNinetyDayDiligencePlan,
+  demoActiveAnnualRevenueAtRiskUsd,
 } from "@/lib/demo-data";
 import type {
   ArchitectureDecision,
@@ -593,6 +594,16 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
             </dd>
           </div>
           <div className="flex gap-2">
+            <dt className="min-w-20 font-semibold text-slate-500">Revenue risk</dt>
+            <dd>
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                maximumFractionDigits: 0,
+              }).format(finding.estimatedAnnualRevenueAtRiskUsd)} / year
+            </dd>
+          </div>
+          <div className="flex gap-2">
             <dt className="min-w-20 font-semibold text-slate-500">Target</dt>
             <dd>
               {new Date(finding.targetRemediationDate).toLocaleDateString(
@@ -622,11 +633,15 @@ function DiligenceReadinessSection() {
     (total, finding) => total + finding.estimatedRemediationCostUsd,
     0
   );
-  const formattedRemediationCost = new Intl.NumberFormat("en-US", {
+  const usdFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
-  }).format(ninetyDayRemediationCost);
+  });
+  const formattedRemediationCost = usdFormatter.format(ninetyDayRemediationCost);
+  const formattedRevenueAtRisk = usdFormatter.format(
+    demoActiveAnnualRevenueAtRiskUsd
+  );
 
   return (
     <Card>
@@ -645,7 +660,7 @@ function DiligenceReadinessSection() {
           {investorBlockingFindings.length} blocking risks
         </Badge>
       </div>
-      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-6">
         <StatCard
           label="Active Findings"
           value={String(activeFindings.length)}
@@ -679,6 +694,12 @@ function DiligenceReadinessSection() {
           value={formattedRemediationCost}
           tone="purple"
           subtitle="estimated remediation"
+        />
+        <StatCard
+          label="Revenue at Risk"
+          value={formattedRevenueAtRisk}
+          tone="red"
+          subtitle="annualized estimate"
         />
       </div>
       <div className="mb-4 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-4">

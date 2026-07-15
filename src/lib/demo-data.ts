@@ -515,6 +515,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     executiveOwner: "VP Engineering",
     evidenceArtifact: "Incident taxonomy pilot board memo with P1/P2 RCA template and trend extract",
     estimatedRemediationCostUsd: 12000,
+    estimatedAnnualRevenueAtRiskUsd: 240000,
     targetRemediationDate: "2026-06-21",
     discoveredAt: "2026-06-01",
     resolvedAt: null,
@@ -539,6 +540,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     executiveOwner: "Head of Platform",
     evidenceArtifact: "Checkout dependency map, address-validation runbook, and degraded-mode fallback plan",
     estimatedRemediationCostUsd: 18000,
+    estimatedAnnualRevenueAtRiskUsd: 720000,
     targetRemediationDate: "2026-06-17",
     discoveredAt: "2026-06-03",
     resolvedAt: null,
@@ -563,6 +565,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     executiveOwner: "CISO Office",
     evidenceArtifact: "Workflow-change control evidence pack with branch-protection screenshot and action pinning register",
     estimatedRemediationCostUsd: 8500,
+    estimatedAnnualRevenueAtRiskUsd: 900000,
     targetRemediationDate: "2026-06-24",
     discoveredAt: "2026-05-28",
     resolvedAt: null,
@@ -587,6 +590,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     executiveOwner: "Head of Customer Experience",
     evidenceArtifact: "AI response QA sample, low-confidence escalation SOP, and published disclosure draft",
     estimatedRemediationCostUsd: 9500,
+    estimatedAnnualRevenueAtRiskUsd: 180000,
     targetRemediationDate: "2026-06-28",
     discoveredAt: "2026-06-05",
     resolvedAt: null,
@@ -611,6 +615,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     executiveOwner: "Director of Engineering Operations",
     evidenceArtifact: "On-call coverage matrix, escalation policy draft, and tabletop exercise agenda",
     estimatedRemediationCostUsd: 7000,
+    estimatedAnnualRevenueAtRiskUsd: 150000,
     targetRemediationDate: "2026-07-02",
     discoveredAt: "2026-06-02",
     resolvedAt: null,
@@ -635,11 +640,21 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     executiveOwner: "CTO",
     evidenceArtifact: "RAPID decision log template plus ADR ownership register",
     estimatedRemediationCostUsd: 3000,
+    estimatedAnnualRevenueAtRiskUsd: 0,
     targetRemediationDate: "2026-06-10",
     discoveredAt: "2026-05-30",
     resolvedAt: "2026-06-10",
   },
 ];
+
+export const demoActiveAnnualRevenueAtRiskUsd = demoDueDiligenceFindings
+  .filter(
+    (finding) => finding.status === "open" || finding.status === "mitigating"
+  )
+  .reduce(
+    (total, finding) => total + finding.estimatedAnnualRevenueAtRiskUsd,
+    0
+  );
 
 const DAY_MS = 1000 * 60 * 60 * 24;
 const NINETY_DAY_DILIGENCE_WINDOW = 90;

@@ -7,6 +7,7 @@ import {
   demoEngineeringKPIs,
   demoDueDiligenceFindings,
   demoNinetyDayDiligencePlan,
+  demoActiveAnnualRevenueAtRiskUsd,
 } from "@/lib/demo-data";
 import type {
   DataroomStatus,
@@ -347,6 +348,25 @@ describe("Due-diligence findings", () => {
     for (const finding of activeFindings) {
       expect(Number.isInteger(finding.estimatedRemediationCostUsd)).toBe(true);
       expect(finding.estimatedRemediationCostUsd).toBeGreaterThan(0);
+    }
+  });
+
+  it("translates active diligence findings into annual revenue exposure", () => {
+    const activeFindings = demoDueDiligenceFindings.filter(
+      (finding) => finding.status === "open" || finding.status === "mitigating"
+    );
+    const reconciledRevenueRisk = activeFindings.reduce(
+      (total, finding) => total + finding.estimatedAnnualRevenueAtRiskUsd,
+      0
+    );
+
+    expect(activeFindings.length).toBeGreaterThan(0);
+    expect(demoActiveAnnualRevenueAtRiskUsd).toBe(reconciledRevenueRisk);
+    expect(demoActiveAnnualRevenueAtRiskUsd).toBeGreaterThan(0);
+
+    for (const finding of activeFindings) {
+      expect(Number.isInteger(finding.estimatedAnnualRevenueAtRiskUsd)).toBe(true);
+      expect(finding.estimatedAnnualRevenueAtRiskUsd).toBeGreaterThan(0);
     }
   });
 
