@@ -510,6 +510,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Board update: incident repeat patterns are now a financing-readiness blocker; VP Engineering owns the RCA taxonomy and will return with owner-by-failure-class evidence before the next board pack.",
     investorMateriality: "blocking",
     dataroomStatus: "partial",
+    criticalVendorDependency: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -535,6 +536,12 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Board update: revenue-critical vendor drag is concentrated in checkout; Head of Platform owns circuit-breaker proof and degraded-mode acceptance criteria for the next investment committee readout.",
     investorMateriality: "blocking",
     dataroomStatus: "partial",
+    criticalVendorDependency: {
+      vendor: "AddressVerify Cloud",
+      revenueCriticalWorkflow: "Checkout address validation",
+      exitReadiness: "missing",
+      estimatedReplacementDays: 45,
+    },
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Ship within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -560,6 +567,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Board update: workflow-change control is the clearest security diligence gap; CISO Office owns branch-protection evidence and action-pinning register before diligence Q&A.",
     investorMateriality: "blocking",
     dataroomStatus: "missing",
+    criticalVendorDependency: null,
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes.",
     executiveOwner: "CISO Office",
@@ -585,6 +593,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Board update: AI support scaling remains a watchlist item until Head of Customer Experience owns confidence thresholds, human review, and customer disclosure artifacts in the dataroom.",
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
+    criticalVendorDependency: null,
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
     executiveOwner: "Head of Customer Experience",
@@ -610,6 +619,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Board update: operational resilience coverage is incomplete outside backend; Engineering Ops owns escalation coverage and tabletop rehearsal proof for the next risk review.",
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
+    criticalVendorDependency: null,
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a tabletop exercise within 30 days.",
     executiveOwner: "Director of Engineering Operations",
@@ -635,6 +645,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       "Board update: decision accountability is accepted as a governance process change; CTO owns the RAPID register and 6-month ADR review cadence in board materials.",
     investorMateriality: "low",
     dataroomStatus: "ready",
+    criticalVendorDependency: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",

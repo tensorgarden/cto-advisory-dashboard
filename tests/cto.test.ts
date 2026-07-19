@@ -14,6 +14,7 @@ import type {
   DueDiligenceDomain,
   InvestorMateriality,
   TechCategory,
+  VendorExitReadiness,
 } from "@/lib/types";
 
 describe("CTO Advisory Dashboard - demo data integrity", () => {
@@ -215,6 +216,54 @@ describe("Due-diligence findings", () => {
     expect(boardUpdate).toContain("vendor");
     expect(boardUpdate).toContain("checkout");
     expect(finding.executiveOwner).toBe("Head of Platform");
+  });
+
+  it("makes critical vendor concentration and exit readiness explicit", () => {
+    const vendorDependencies = demoDueDiligenceFindings.filter(
+      (finding) => finding.criticalVendorDependency !== null
+    );
+    const validReadiness: VendorExitReadiness[] = [
+      "missing",
+      "planned",
+      "tested",
+    ];
+
+    expect(vendorDependencies.length).toBeGreaterThan(0);
+    for (const finding of vendorDependencies) {
+      const dependency = finding.criticalVendorDependency;
+
+      expect(finding.domain).toBe("architecture_dependency");
+      expect(dependency).not.toBeNull();
+      if (!dependency) continue;
+
+      expect(dependency.vendor.length).toBeGreaterThan(2);
+      expect(dependency.revenueCriticalWorkflow.length).toBeGreaterThan(10);
+      expect(validReadiness).toContain(dependency.exitReadiness);
+      expect(Number.isInteger(dependency.estimatedReplacementDays)).toBe(true);
+      expect(dependency.estimatedReplacementDays).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps untested vendor exits in active investor review", () => {
+    const vendorBlockers = demoDueDiligenceFindings.filter(
+      (finding) =>
+        finding.domain === "architecture_dependency" &&
+        finding.investorMateriality === "blocking"
+    );
+
+    expect(vendorBlockers.length).toBeGreaterThan(0);
+    for (const finding of vendorBlockers) {
+      const dependency = finding.criticalVendorDependency;
+
+      expect(dependency).not.toBeNull();
+      if (!dependency || dependency.exitReadiness === "tested") continue;
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(
+        `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase()
+      ).toContain("fallback");
+    }
   });
 
   it("keeps active investor-blocking findings from looking dataroom-ready", () => {

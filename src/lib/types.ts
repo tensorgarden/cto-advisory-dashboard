@@ -91,6 +91,15 @@ export type InvestorMateriality = "blocking" | "watchlist" | "low";
 
 export type DataroomStatus = "missing" | "partial" | "ready";
 
+export type VendorExitReadiness = "missing" | "planned" | "tested";
+
+export interface CriticalVendorDependency {
+  vendor: string;
+  revenueCriticalWorkflow: string;
+  exitReadiness: VendorExitReadiness;
+  estimatedReplacementDays: number;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -102,6 +111,7 @@ export interface DueDiligenceFinding {
   boardReadyUpdate: string;
   investorMateriality: InvestorMateriality;
   dataroomStatus: DataroomStatus;
+  criticalVendorDependency: CriticalVendorDependency | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

@@ -583,6 +583,20 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
             <dt className="min-w-20 font-semibold text-slate-500">Evidence</dt>
             <dd>{finding.evidenceArtifact}</dd>
           </div>
+          {finding.criticalVendorDependency && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Vendor exit
+              </dt>
+              <dd>
+                {finding.criticalVendorDependency.vendor} ·{" "}
+                {finding.criticalVendorDependency.revenueCriticalWorkflow} ·{" "}
+                {finding.criticalVendorDependency.exitReadiness} ·{" "}
+                {finding.criticalVendorDependency.estimatedReplacementDays}-day
+                replacement estimate
+              </dd>
+            </div>
+          )}
           <div className="flex gap-2">
             <dt className="min-w-20 font-semibold text-slate-500">Budget</dt>
             <dd>
