@@ -100,6 +100,18 @@ export interface CriticalVendorDependency {
   estimatedReplacementDays: number;
 }
 
+export type KeyPersonHandoverReadiness =
+  | "missing"
+  | "in_progress"
+  | "verified";
+
+export interface KeyPersonDependency {
+  criticalSystem: string;
+  primaryOwner: string;
+  backupOwner: string | null;
+  handoverReadiness: KeyPersonHandoverReadiness;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -112,6 +124,7 @@ export interface DueDiligenceFinding {
   investorMateriality: InvestorMateriality;
   dataroomStatus: DataroomStatus;
   criticalVendorDependency: CriticalVendorDependency | null;
+  keyPersonDependency: KeyPersonDependency | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

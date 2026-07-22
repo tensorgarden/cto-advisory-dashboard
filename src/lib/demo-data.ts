@@ -511,6 +511,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorMateriality: "blocking",
     dataroomStatus: "partial",
     criticalVendorDependency: null,
+    keyPersonDependency: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -542,10 +543,16 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       exitReadiness: "missing",
       estimatedReplacementDays: 45,
     },
+    keyPersonDependency: {
+      criticalSystem: "Checkout failure and degraded-mode operations",
+      primaryOwner: "Marcus Webb",
+      backupOwner: null,
+      handoverReadiness: "missing",
+    },
     recommendation:
-      "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Ship within 1 sprint.",
+      "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
-    evidenceArtifact: "Checkout dependency map, address-validation runbook, and degraded-mode fallback plan",
+    evidenceArtifact: "Checkout dependency map, address-validation runbook, degraded-mode fallback plan, and backup-operator handover drill record",
     estimatedRemediationCostUsd: 18000,
     estimatedAnnualRevenueAtRiskUsd: 720000,
     targetRemediationDate: "2026-06-17",
@@ -568,6 +575,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorMateriality: "blocking",
     dataroomStatus: "missing",
     criticalVendorDependency: null,
+    keyPersonDependency: null,
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes.",
     executiveOwner: "CISO Office",
@@ -594,6 +602,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
     criticalVendorDependency: null,
+    keyPersonDependency: null,
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
     executiveOwner: "Head of Customer Experience",
@@ -620,6 +629,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
     criticalVendorDependency: null,
+    keyPersonDependency: null,
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a tabletop exercise within 30 days.",
     executiveOwner: "Director of Engineering Operations",
@@ -646,6 +656,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorMateriality: "low",
     dataroomStatus: "ready",
     criticalVendorDependency: null,
+    keyPersonDependency: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",

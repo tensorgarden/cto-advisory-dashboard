@@ -13,6 +13,7 @@ import type {
   DataroomStatus,
   DueDiligenceDomain,
   InvestorMateriality,
+  KeyPersonHandoverReadiness,
   TechCategory,
   VendorExitReadiness,
 } from "@/lib/types";
@@ -263,6 +264,58 @@ describe("Due-diligence findings", () => {
       expect(
         `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase()
       ).toContain("fallback");
+    }
+  });
+
+  it("makes critical-system key-person coverage explicit", () => {
+    const keyPersonDependencies = demoDueDiligenceFindings.filter(
+      (finding) => finding.keyPersonDependency !== null
+    );
+    const validReadiness: KeyPersonHandoverReadiness[] = [
+      "missing",
+      "in_progress",
+      "verified",
+    ];
+
+    expect(keyPersonDependencies.length).toBeGreaterThan(0);
+    for (const finding of keyPersonDependencies) {
+      const dependency = finding.keyPersonDependency;
+
+      expect(["architecture_dependency", "operational_resilience"]).toContain(
+        finding.domain
+      );
+      expect(dependency).not.toBeNull();
+      if (!dependency) continue;
+
+      expect(dependency.criticalSystem.length).toBeGreaterThan(20);
+      expect(dependency.primaryOwner.length).toBeGreaterThan(2);
+      expect(validReadiness).toContain(dependency.handoverReadiness);
+      if (dependency.backupOwner === null) {
+        expect(dependency.handoverReadiness).not.toBe("verified");
+      }
+    }
+  });
+
+  it("keeps single-owner systems in active investor review until handover is verified", () => {
+    const unresolvedCoverage = demoDueDiligenceFindings.filter((finding) => {
+      const dependency = finding.keyPersonDependency;
+      return (
+        dependency !== null &&
+        (dependency.backupOwner === null ||
+          dependency.handoverReadiness !== "verified")
+      );
+    });
+
+    expect(unresolvedCoverage.length).toBeGreaterThan(0);
+    for (const finding of unresolvedCoverage) {
+      const evidence =
+        `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+
+      expect(finding.investorMateriality).toBe("blocking");
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(evidence).toContain("backup");
+      expect(evidence).toContain("handover");
     }
   });
 

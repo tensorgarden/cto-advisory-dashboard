@@ -597,6 +597,20 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.keyPersonDependency && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Key-person
+              </dt>
+              <dd>
+                {finding.keyPersonDependency.criticalSystem} ·{" "}
+                {finding.keyPersonDependency.primaryOwner} primary ·{" "}
+                {finding.keyPersonDependency.backupOwner ?? "no named backup"} ·{" "}
+                {finding.keyPersonDependency.handoverReadiness.replace("_", " ")}{" "}
+                handover
+              </dd>
+            </div>
+          )}
           <div className="flex gap-2">
             <dt className="min-w-20 font-semibold text-slate-500">Budget</dt>
             <dd>
