@@ -611,6 +611,24 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.recoveryExerciseEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Recovery test
+              </dt>
+              <dd>
+                {finding.recoveryExerciseEvidence.criticalSystem} · RTO{" "}
+                {finding.recoveryExerciseEvidence.targetRtoMinutes} min / RPO{" "}
+                {finding.recoveryExerciseEvidence.targetRpoMinutes} min ·{" "}
+                {finding.recoveryExerciseEvidence.outcome.replaceAll("_", " ")} ·{" "}
+                {finding.recoveryExerciseEvidence.lastExerciseDate
+                  ? `last run ${new Date(
+                      finding.recoveryExerciseEvidence.lastExerciseDate
+                    ).toLocaleDateString("en-US")}`
+                  : "exercise not yet run"}
+              </dd>
+            </div>
+          )}
           <div className="flex gap-2">
             <dt className="min-w-20 font-semibold text-slate-500">Budget</dt>
             <dd>
@@ -772,7 +790,7 @@ function DiligenceReadinessSection() {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {activeFindings.slice(0, 3).map((finding) => (
+        {activeFindings.map((finding) => (
           <DiligenceFindingCard key={finding.id} finding={finding} />
         ))}
       </div>

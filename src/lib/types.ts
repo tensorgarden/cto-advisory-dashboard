@@ -112,6 +112,20 @@ export interface KeyPersonDependency {
   handoverReadiness: KeyPersonHandoverReadiness;
 }
 
+export type RecoveryExerciseOutcome =
+  | "not_run"
+  | "missed_objectives"
+  | "met_objectives";
+
+export interface RecoveryExerciseEvidence {
+  criticalSystem: string;
+  targetRtoMinutes: number;
+  targetRpoMinutes: number;
+  lastExerciseDate: string | null;
+  actualRecoveryMinutes: number | null;
+  outcome: RecoveryExerciseOutcome;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -125,6 +139,7 @@ export interface DueDiligenceFinding {
   dataroomStatus: DataroomStatus;
   criticalVendorDependency: CriticalVendorDependency | null;
   keyPersonDependency: KeyPersonDependency | null;
+  recoveryExerciseEvidence: RecoveryExerciseEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

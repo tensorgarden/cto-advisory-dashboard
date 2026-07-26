@@ -14,6 +14,7 @@ import type {
   DueDiligenceDomain,
   InvestorMateriality,
   KeyPersonHandoverReadiness,
+  RecoveryExerciseOutcome,
   TechCategory,
   VendorExitReadiness,
 } from "@/lib/types";
@@ -316,6 +317,57 @@ describe("Due-diligence findings", () => {
       expect(finding.dataroomStatus).not.toBe("ready");
       expect(evidence).toContain("backup");
       expect(evidence).toContain("handover");
+    }
+  });
+
+  it("makes recovery objectives and exercise evidence explicit", () => {
+    const recoveryEvidence = demoDueDiligenceFindings.filter(
+      (finding) => finding.recoveryExerciseEvidence !== null
+    );
+    const validOutcomes: RecoveryExerciseOutcome[] = [
+      "not_run",
+      "missed_objectives",
+      "met_objectives",
+    ];
+
+    expect(recoveryEvidence.length).toBeGreaterThan(0);
+    for (const finding of recoveryEvidence) {
+      const evidence = finding.recoveryExerciseEvidence;
+
+      expect(finding.domain).toBe("operational_resilience");
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(evidence.criticalSystem.length).toBeGreaterThan(20);
+      expect(Number.isInteger(evidence.targetRtoMinutes)).toBe(true);
+      expect(Number.isInteger(evidence.targetRpoMinutes)).toBe(true);
+      expect(evidence.targetRtoMinutes).toBeGreaterThan(0);
+      expect(evidence.targetRpoMinutes).toBeGreaterThan(0);
+      expect(validOutcomes).toContain(evidence.outcome);
+      if (evidence.outcome === "not_run") {
+        expect(evidence.lastExerciseDate).toBeNull();
+        expect(evidence.actualRecoveryMinutes).toBeNull();
+      }
+    }
+  });
+
+  it("keeps untested recovery objectives in active investor review", () => {
+    const unprovenRecovery = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.recoveryExerciseEvidence;
+      return evidence !== null && evidence.outcome !== "met_objectives";
+    });
+
+    expect(unprovenRecovery.length).toBeGreaterThan(0);
+    for (const finding of unprovenRecovery) {
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toContain("recovery");
+      expect(proof).toContain("rto");
+      expect(proof).toContain("rpo");
+      expect(proof).toContain("exercise");
     }
   });
 

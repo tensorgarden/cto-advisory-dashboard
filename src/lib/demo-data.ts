@@ -512,6 +512,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataroomStatus: "partial",
     criticalVendorDependency: null,
     keyPersonDependency: null,
+    recoveryExerciseEvidence: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -549,6 +550,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       backupOwner: null,
       handoverReadiness: "missing",
     },
+    recoveryExerciseEvidence: null,
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -576,6 +578,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataroomStatus: "missing",
     criticalVendorDependency: null,
     keyPersonDependency: null,
+    recoveryExerciseEvidence: null,
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes.",
     executiveOwner: "CISO Office",
@@ -603,6 +606,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataroomStatus: "partial",
     criticalVendorDependency: null,
     keyPersonDependency: null,
+    recoveryExerciseEvidence: null,
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
     executiveOwner: "Head of Customer Experience",
@@ -630,10 +634,18 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataroomStatus: "partial",
     criticalVendorDependency: null,
     keyPersonDependency: null,
+    recoveryExerciseEvidence: {
+      criticalSystem: "Customer analytics data pipeline",
+      targetRtoMinutes: 240,
+      targetRpoMinutes: 60,
+      lastExerciseDate: null,
+      actualRecoveryMinutes: null,
+      outcome: "not_run",
+    },
     recommendation:
-      "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a tabletop exercise within 30 days.",
+      "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a recovery exercise within 30 days and measure actual restoration against the 4-hour RTO and 1-hour RPO.",
     executiveOwner: "Director of Engineering Operations",
-    evidenceArtifact: "On-call coverage matrix, escalation policy draft, and tabletop exercise agenda",
+    evidenceArtifact: "On-call coverage matrix, escalation policy, and signed recovery-exercise result with RTO/RPO measurements",
     estimatedRemediationCostUsd: 7000,
     estimatedAnnualRevenueAtRiskUsd: 150000,
     targetRemediationDate: "2026-07-02",
@@ -657,6 +669,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataroomStatus: "ready",
     criticalVendorDependency: null,
     keyPersonDependency: null,
+    recoveryExerciseEvidence: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",
