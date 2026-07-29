@@ -543,6 +543,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       revenueCriticalWorkflow: "Checkout address validation",
       exitReadiness: "missing",
       estimatedReplacementDays: 45,
+      contractTransferStatus: "consent_required",
+      contractEvidenceArtifact:
+        "Executed vendor agreement with change-of-control clause and written consent request tracker",
     },
     keyPersonDependency: {
       criticalSystem: "Checkout failure and degraded-mode operations",
@@ -552,9 +555,9 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     },
     recoveryExerciseEvidence: null,
     recommendation:
-      "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
+      "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Obtain written change-of-control consent from the vendor. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
-    evidenceArtifact: "Checkout dependency map, address-validation runbook, degraded-mode fallback plan, and backup-operator handover drill record",
+    evidenceArtifact: "Checkout dependency map, address-validation runbook, degraded-mode fallback plan, vendor consent record, and backup-operator handover drill record",
     estimatedRemediationCostUsd: 18000,
     estimatedAnnualRevenueAtRiskUsd: 720000,
     targetRemediationDate: "2026-06-17",

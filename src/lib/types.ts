@@ -93,11 +93,18 @@ export type DataroomStatus = "missing" | "partial" | "ready";
 
 export type VendorExitReadiness = "missing" | "planned" | "tested";
 
+export type VendorContractTransferStatus =
+  | "not_reviewed"
+  | "consent_required"
+  | "transferable";
+
 export interface CriticalVendorDependency {
   vendor: string;
   revenueCriticalWorkflow: string;
   exitReadiness: VendorExitReadiness;
   estimatedReplacementDays: number;
+  contractTransferStatus: VendorContractTransferStatus;
+  contractEvidenceArtifact: string;
 }
 
 export type KeyPersonHandoverReadiness =

@@ -597,6 +597,20 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.criticalVendorDependency && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Vendor transfer
+              </dt>
+              <dd>
+                {finding.criticalVendorDependency.contractTransferStatus.replaceAll(
+                  "_",
+                  " "
+                )}{" "}
+                · {finding.criticalVendorDependency.contractEvidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.keyPersonDependency && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

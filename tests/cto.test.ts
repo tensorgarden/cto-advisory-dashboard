@@ -16,6 +16,7 @@ import type {
   KeyPersonHandoverReadiness,
   RecoveryExerciseOutcome,
   TechCategory,
+  VendorContractTransferStatus,
   VendorExitReadiness,
 } from "@/lib/types";
 
@@ -241,8 +242,40 @@ describe("Due-diligence findings", () => {
       expect(dependency.vendor.length).toBeGreaterThan(2);
       expect(dependency.revenueCriticalWorkflow.length).toBeGreaterThan(10);
       expect(validReadiness).toContain(dependency.exitReadiness);
+      const validTransferStatuses: VendorContractTransferStatus[] = [
+        "not_reviewed",
+        "consent_required",
+        "transferable",
+      ];
+
       expect(Number.isInteger(dependency.estimatedReplacementDays)).toBe(true);
       expect(dependency.estimatedReplacementDays).toBeGreaterThan(0);
+      expect(validTransferStatuses).toContain(dependency.contractTransferStatus);
+      expect(dependency.contractEvidenceArtifact.length).toBeGreaterThan(30);
+    }
+  });
+
+  it("keeps unresolved vendor transfer terms in active investor review", () => {
+    const unresolvedTransfers = demoDueDiligenceFindings.filter((finding) => {
+      const dependency = finding.criticalVendorDependency;
+      return (
+        dependency !== null &&
+        dependency.contractTransferStatus !== "transferable"
+      );
+    });
+
+    expect(unresolvedTransfers.length).toBeGreaterThan(0);
+    for (const finding of unresolvedTransfers) {
+      const dependency = finding.criticalVendorDependency;
+      expect(dependency).not.toBeNull();
+      if (!dependency) continue;
+
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact} ${dependency.contractEvidenceArtifact}`.toLowerCase();
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(/consent|change-of-control/);
     }
   });
 
