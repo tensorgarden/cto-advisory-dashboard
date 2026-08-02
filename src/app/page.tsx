@@ -625,6 +625,20 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.openSourceLicenseReview && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                OSS licenses
+              </dt>
+              <dd>
+                {finding.openSourceLicenseReview.reviewedPackageCount} packages
+                reviewed · {finding.openSourceLicenseReview.copyleftPackageCount}{" "}
+                copyleft ·{" "}
+                {finding.openSourceLicenseReview.status.replaceAll("_", " ")} ·{" "}
+                {finding.openSourceLicenseReview.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.recoveryExerciseEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

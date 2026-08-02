@@ -133,6 +133,19 @@ export interface RecoveryExerciseEvidence {
   outcome: RecoveryExerciseOutcome;
 }
 
+export type OpenSourceLicenseReviewStatus =
+  | "clear"
+  | "review_required"
+  | "prohibited";
+
+export interface OpenSourceLicenseReview {
+  dependencySnapshotDate: string;
+  reviewedPackageCount: number;
+  copyleftPackageCount: number;
+  status: OpenSourceLicenseReviewStatus;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -147,6 +160,7 @@ export interface DueDiligenceFinding {
   criticalVendorDependency: CriticalVendorDependency | null;
   keyPersonDependency: KeyPersonDependency | null;
   recoveryExerciseEvidence: RecoveryExerciseEvidence | null;
+  openSourceLicenseReview: OpenSourceLicenseReview | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

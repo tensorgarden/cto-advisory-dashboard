@@ -14,6 +14,7 @@ import type {
   DueDiligenceDomain,
   InvestorMateriality,
   KeyPersonHandoverReadiness,
+  OpenSourceLicenseReviewStatus,
   RecoveryExerciseOutcome,
   TechCategory,
   VendorContractTransferStatus,
@@ -276,6 +277,57 @@ describe("Due-diligence findings", () => {
       expect(["open", "mitigating"]).toContain(finding.status);
       expect(finding.dataroomStatus).not.toBe("ready");
       expect(proof).toMatch(/consent|change-of-control/);
+    }
+  });
+
+  it("makes open-source license exposure evidence-backed", () => {
+    const licenseReviews = demoDueDiligenceFindings.filter(
+      (finding) => finding.openSourceLicenseReview !== null
+    );
+    const validStatuses: OpenSourceLicenseReviewStatus[] = [
+      "clear",
+      "review_required",
+      "prohibited",
+    ];
+
+    expect(licenseReviews.length).toBeGreaterThan(0);
+    for (const finding of licenseReviews) {
+      const review = finding.openSourceLicenseReview;
+
+      expect(finding.domain).toBe("security_supply_chain");
+      expect(review).not.toBeNull();
+      if (!review) continue;
+
+      expect(Number.isNaN(Date.parse(review.dependencySnapshotDate))).toBe(false);
+      expect(Number.isInteger(review.reviewedPackageCount)).toBe(true);
+      expect(review.reviewedPackageCount).toBeGreaterThan(0);
+      expect(Number.isInteger(review.copyleftPackageCount)).toBe(true);
+      expect(review.copyleftPackageCount).toBeGreaterThanOrEqual(0);
+      expect(review.copyleftPackageCount).toBeLessThanOrEqual(
+        review.reviewedPackageCount
+      );
+      expect(validStatuses).toContain(review.status);
+      expect(review.evidenceArtifact.toLowerCase()).toMatch(/license|sbom/);
+    }
+  });
+
+  it("keeps unresolved license findings out of a ready dataroom", () => {
+    const unresolvedReviews = demoDueDiligenceFindings.filter(
+      (finding) =>
+        finding.openSourceLicenseReview !== null &&
+        finding.openSourceLicenseReview.status !== "clear"
+    );
+
+    expect(unresolvedReviews.length).toBeGreaterThan(0);
+    for (const finding of unresolvedReviews) {
+      const review = finding.openSourceLicenseReview;
+      expect(review).not.toBeNull();
+      if (!review) continue;
+
+      expect(review.copyleftPackageCount).toBeGreaterThan(0);
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(review.evidenceArtifact.toLowerCase()).toContain("disposition");
     }
   });
 
