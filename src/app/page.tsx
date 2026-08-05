@@ -639,6 +639,20 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.penetrationTestEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Pen test
+              </dt>
+              <dd>
+                {finding.penetrationTestEvidence.scope} ·{" "}
+                {finding.penetrationTestEvidence.testingFirm ??
+                  "no independent firm engaged"}{" "}
+                · {finding.penetrationTestEvidence.status.replaceAll("_", " ")}{" "}
+                · {finding.penetrationTestEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.recoveryExerciseEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

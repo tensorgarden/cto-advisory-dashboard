@@ -514,6 +514,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     keyPersonDependency: null,
     recoveryExerciseEvidence: null,
     openSourceLicenseReview: null,
+    penetrationTestEvidence: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -556,6 +557,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     },
     recoveryExerciseEvidence: null,
     openSourceLicenseReview: null,
+    penetrationTestEvidence: null,
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Obtain written change-of-control consent from the vendor. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -592,8 +594,19 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       evidenceArtifact:
         "Software bill of materials with package-level license scan and counsel disposition register",
     },
+    penetrationTestEvidence: {
+      scope:
+        "Production web platform, CI/CD pipeline, and cloud infrastructure",
+      testingFirm: null,
+      lastTestDate: null,
+      openHighCriticalFindings: null,
+      retestVerifiedDate: null,
+      status: "not_run",
+      evidenceArtifact:
+        "No independent penetration-test report on file — automated scanner coverage only",
+    },
     recommendation:
-      "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes. Complete counsel disposition for the two copyleft packages before marking the security evidence pack ready.",
+      "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes. Complete counsel disposition for the two copyleft packages before marking the security evidence pack ready. Commission an independent third-party penetration test of the production platform and CI/CD pipeline, with a verified retest of any high or critical findings, before diligence Q&A.",
     executiveOwner: "CISO Office",
     evidenceArtifact: "Workflow-change control evidence pack with branch-protection screenshot and action pinning register",
     estimatedRemediationCostUsd: 8500,
@@ -621,6 +634,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     keyPersonDependency: null,
     recoveryExerciseEvidence: null,
     openSourceLicenseReview: null,
+    penetrationTestEvidence: null,
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center.",
     executiveOwner: "Head of Customer Experience",
@@ -657,6 +671,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       outcome: "not_run",
     },
     openSourceLicenseReview: null,
+    penetrationTestEvidence: null,
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a recovery exercise within 30 days and measure actual restoration against the 4-hour RTO and 1-hour RPO.",
     executiveOwner: "Director of Engineering Operations",
@@ -686,6 +701,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     keyPersonDependency: null,
     recoveryExerciseEvidence: null,
     openSourceLicenseReview: null,
+    penetrationTestEvidence: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",

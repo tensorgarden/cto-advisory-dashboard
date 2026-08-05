@@ -146,6 +146,22 @@ export interface OpenSourceLicenseReview {
   evidenceArtifact: string;
 }
 
+export type PenetrationTestStatus =
+  | "not_run"
+  | "stale"
+  | "open_findings"
+  | "remediated";
+
+export interface PenetrationTestEvidence {
+  scope: string;
+  testingFirm: string | null;
+  lastTestDate: string | null;
+  openHighCriticalFindings: number | null;
+  retestVerifiedDate: string | null;
+  status: PenetrationTestStatus;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -161,6 +177,7 @@ export interface DueDiligenceFinding {
   keyPersonDependency: KeyPersonDependency | null;
   recoveryExerciseEvidence: RecoveryExerciseEvidence | null;
   openSourceLicenseReview: OpenSourceLicenseReview | null;
+  penetrationTestEvidence: PenetrationTestEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

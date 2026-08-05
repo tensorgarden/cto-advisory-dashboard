@@ -15,6 +15,7 @@ import type {
   InvestorMateriality,
   KeyPersonHandoverReadiness,
   OpenSourceLicenseReviewStatus,
+  PenetrationTestStatus,
   RecoveryExerciseOutcome,
   TechCategory,
   VendorContractTransferStatus,
@@ -453,6 +454,63 @@ describe("Due-diligence findings", () => {
       expect(proof).toContain("rto");
       expect(proof).toContain("rpo");
       expect(proof).toContain("exercise");
+    }
+  });
+
+  it("makes penetration-test evidence explicit and internally consistent", () => {
+    const penTestRecords = demoDueDiligenceFindings.filter(
+      (finding) => finding.penetrationTestEvidence !== null
+    );
+    const validStatuses: PenetrationTestStatus[] = [
+      "not_run",
+      "stale",
+      "open_findings",
+      "remediated",
+    ];
+
+    expect(penTestRecords.length).toBeGreaterThan(0);
+    for (const finding of penTestRecords) {
+      const evidence = finding.penetrationTestEvidence;
+
+      expect(finding.domain).toBe("security_supply_chain");
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(evidence.scope.length).toBeGreaterThan(20);
+      expect(validStatuses).toContain(evidence.status);
+      if (evidence.status === "not_run") {
+        expect(evidence.testingFirm).toBeNull();
+        expect(evidence.lastTestDate).toBeNull();
+        expect(evidence.openHighCriticalFindings).toBeNull();
+        expect(evidence.retestVerifiedDate).toBeNull();
+      }
+      if (evidence.status === "remediated") {
+        expect(evidence.testingFirm).not.toBeNull();
+        expect(evidence.lastTestDate).not.toBeNull();
+        expect(evidence.openHighCriticalFindings).toBe(0);
+        expect(evidence.retestVerifiedDate).not.toBeNull();
+      }
+      if (evidence.status === "open_findings") {
+        expect(evidence.openHighCriticalFindings ?? 0).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("keeps unproven penetration-test evidence in active investor review", () => {
+    const unproven = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.penetrationTestEvidence;
+      return evidence !== null && evidence.status !== "remediated";
+    });
+
+    expect(unproven.length).toBeGreaterThan(0);
+    for (const finding of unproven) {
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(/\bindependent\b/);
+      expect(proof).toMatch(/\bpenetration test\b/);
     }
   });
 
