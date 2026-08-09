@@ -709,4 +709,37 @@ describe("Due-diligence findings", () => {
       expect(f.dataroomStatus).not.toBe("ready");
     }
   });
+
+  it("shows tactical checkpoint specificity for investor-blocking findings", () => {
+    const blockingFindings = demoDueDiligenceFindings.filter(
+      (f) =>
+        f.investorMateriality === "blocking" &&
+        (f.status === "open" || f.status === "mitigating")
+    );
+
+    expect(blockingFindings.length).toBeGreaterThan(0);
+
+    for (const finding of blockingFindings) {
+      const fullText = `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+
+      // Investor blocking findings must show concrete verification signals, not just
+      // timelines. Examples: runbook titles, role assignments, test/drill records,
+      // written consent tracking, external firm engagement, retest dates.
+      const hasVerificationSignal =
+        fullText.includes("runbook") ||
+        fullText.includes("drill") ||
+        fullText.includes("consent") ||
+        fullText.includes("circuit") ||
+        fullText.includes("handover") ||
+        fullText.includes("retest") ||
+        fullText.includes("acceptance") ||
+        fullText.includes("evidence") ||
+        fullText.includes("register") ||
+        fullText.includes("template") ||
+        fullText.includes("officer") ||
+        fullText.includes("firm");
+
+      expect(hasVerificationSignal).toBe(true);
+    }
+  });
 });
