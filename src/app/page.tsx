@@ -653,6 +653,32 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.complianceCertificationEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Certifications
+              </dt>
+              <dd>
+                {finding.complianceCertificationEvidence.framework} ·{" "}
+                {finding.complianceCertificationEvidence.scope} ·{" "}
+                {finding.complianceCertificationEvidence.status.replaceAll(
+                  "_",
+                  " "
+                )}{" "}
+                ·{" "}
+                {finding.complianceCertificationEvidence.expiryOrTargetDate
+                  ? `target ${new Date(
+                      finding.complianceCertificationEvidence.expiryOrTargetDate
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}`
+                  : "no target date"}{" "}
+                · {finding.complianceCertificationEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.recoveryExerciseEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

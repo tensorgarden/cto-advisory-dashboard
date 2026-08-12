@@ -162,6 +162,21 @@ export interface PenetrationTestEvidence {
   evidenceArtifact: string;
 }
 
+export type ComplianceCertificationStatus =
+  | "not_started"
+  | "in_progress"
+  | "certified"
+  | "expired";
+
+export interface ComplianceCertificationEvidence {
+  framework: string;
+  scope: string;
+  status: ComplianceCertificationStatus;
+  certificationDate: string | null;
+  expiryOrTargetDate: string | null;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -178,6 +193,7 @@ export interface DueDiligenceFinding {
   recoveryExerciseEvidence: RecoveryExerciseEvidence | null;
   openSourceLicenseReview: OpenSourceLicenseReview | null;
   penetrationTestEvidence: PenetrationTestEvidence | null;
+  complianceCertificationEvidence: ComplianceCertificationEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

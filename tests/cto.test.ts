@@ -10,6 +10,7 @@ import {
   demoActiveAnnualRevenueAtRiskUsd,
 } from "@/lib/demo-data";
 import type {
+  ComplianceCertificationStatus,
   DataroomStatus,
   DueDiligenceDomain,
   InvestorMateriality,
@@ -742,4 +743,92 @@ describe("Due-diligence findings", () => {
       expect(hasVerificationSignal).toBe(true);
     }
   });
+
+  it("makes compliance certification evidence explicit and internally consistent", () => {
+    const certificationRecords = demoDueDiligenceFindings.filter(
+      (finding) => finding.complianceCertificationEvidence !== null
+    );
+    const validStatuses: ComplianceCertificationStatus[] = [
+      "not_started",
+      "in_progress",
+      "certified",
+      "expired",
+    ];
+
+    expect(certificationRecords.length).toBeGreaterThan(0);
+    for (const finding of certificationRecords) {
+      const evidence = finding.complianceCertificationEvidence;
+
+      expect(["security_supply_chain", "data_ai_governance"]).toContain(
+        finding.domain
+      );
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(evidence.framework.length).toBeGreaterThan(3);
+      expect(evidence.scope.length).toBeGreaterThan(15);
+      expect(validStatuses).toContain(evidence.status);
+      expect(evidence.evidenceArtifact.toLowerCase()).toMatch(
+        /register|assessment|report|letter|note|audit/
+      );
+      if (evidence.status === "certified") {
+        expect(evidence.certificationDate).not.toBeNull();
+      }
+      if (evidence.status === "not_started") {
+        expect(evidence.certificationDate).toBeNull();
+      }
+      if (evidence.status !== "certified" && evidence.expiryOrTargetDate !== null) {
+        expect(Number.isNaN(Date.parse(evidence.expiryOrTargetDate))).toBe(false);
+      }
+    }
+  });
+
+  it("keeps uncertified compliance evidence in active investor review", () => {
+    const uncertified = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.complianceCertificationEvidence;
+      return evidence !== null && evidence.status !== "certified";
+    });
+
+    expect(uncertified.length).toBeGreaterThan(0);
+    for (const finding of uncertified) {
+      const evidence = finding.complianceCertificationEvidence;
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(
+        /audit|certification|privacy|gdpr|soc 2|iso|readiness|ai act/
+      );
+      expect(`${evidence.evidenceArtifact} ${evidence.framework}`.toLowerCase()).toMatch(
+        /soc 2|gdpr|ccpa|iso|ai act/
+      );
+    }
+  });
+
+  it("covers both security certification and privacy readiness frameworks", () => {
+    const frameworks = demoDueDiligenceFindings
+      .map((finding) => finding.complianceCertificationEvidence?.framework ?? "")
+      .filter((framework) => framework.length > 0)
+      .map((framework) => framework.toLowerCase());
+
+    expect(frameworks.length).toBeGreaterThanOrEqual(2);
+    expect(
+      frameworks.some(
+        (framework) => framework.includes("soc 2") || framework.includes("iso")
+      )
+    ).toBe(true);
+    expect(
+      frameworks.some(
+        (framework) =>
+          framework.includes("gdpr") ||
+          framework.includes("ccpa") ||
+          framework.includes("ai act")
+      )
+    ).toBe(true);
+  });
+
 });
