@@ -492,7 +492,7 @@ export const demoEngineeringKPIs: EngineeringMetric[] = [
   },
 ];
 
-// ─── 6 Due-Diligence Findings (pre-engagement discovery) ──────────────────────
+// ─── 7 Due-Diligence Findings (pre-engagement discovery) ──────────────────────
 
 export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
   {
@@ -516,6 +516,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     openSourceLicenseReview: null,
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
+    intellectualPropertyAssignmentEvidence: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -560,6 +561,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     openSourceLicenseReview: null,
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
+    intellectualPropertyAssignmentEvidence: null,
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Obtain written change-of-control consent from the vendor. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -617,6 +619,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       evidenceArtifact:
         "SOC 2 Type II gap assessment, control-mapping register, and audit firm engagement letter",
     },
+    intellectualPropertyAssignmentEvidence: null,
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes. Complete counsel disposition for the two copyleft packages before marking the security evidence pack ready. Commission an independent third-party penetration test of the production platform and CI/CD pipeline, with a verified retest of any high or critical findings, before diligence Q&A. Map controls to the SOC 2 Type II trust service criteria and book the external audit window with the selected firm before diligence Q&A.",
     executiveOwner: "CISO Office",
@@ -657,6 +660,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       evidenceArtifact:
         "Privacy compliance gap register with EU AI Act applicability assessment and DPO engagement note",
     },
+    intellectualPropertyAssignmentEvidence: null,
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center. Begin a GDPR/CCPA readiness assessment and document EU AI Act applicability for the chatbot before scaling the pilot.",
     executiveOwner: "Head of Customer Experience",
@@ -695,6 +699,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     openSourceLicenseReview: null,
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
+    intellectualPropertyAssignmentEvidence: null,
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a recovery exercise within 30 days and measure actual restoration against the 4-hour RTO and 1-hour RPO.",
     executiveOwner: "Director of Engineering Operations",
@@ -726,6 +731,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     openSourceLicenseReview: null,
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
+    intellectualPropertyAssignmentEvidence: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",
@@ -735,6 +741,47 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     targetRemediationDate: "2026-06-10",
     discoveredAt: "2026-05-30",
     resolvedAt: "2026-06-10",
+  },
+  {
+    id: "dd-007",
+    domain: "intellectual_property",
+    severity: "high",
+    status: "open",
+    finding:
+      "Four of the nine people who contributed production code never signed a proprietary information and inventions agreement: two early contractors and two current engineers. Their code has no assignment clause or work-for-hire documentation on file.",
+    impact:
+      "The company may not own all of its own codebase. Unsigned contributors could retain rights over customer-facing checkout logic and internal tooling. IP ownership gaps are the most common legal red flag investors surface during diligence.",
+    investorQuestion:
+      "Can the company produce signed invention-assignment agreements from every founder, employee, and contractor who contributed to the product?",
+    boardReadyUpdate:
+      "Board update: IP assignment gaps are the top legal diligence red flag for this round; General Counsel owns the PIIA register and signed-assignment evidence before the investment committee pack.",
+    investorMateriality: "blocking",
+    dataroomStatus: "partial",
+    criticalVendorDependency: null,
+    keyPersonDependency: null,
+    recoveryExerciseEvidence: null,
+    openSourceLicenseReview: null,
+    penetrationTestEvidence: null,
+    complianceCertificationEvidence: null,
+    intellectualPropertyAssignmentEvidence: {
+      contributorClass:
+        "Founders, employees, and contractors with production-code access",
+      totalContributors: 9,
+      signedAssignmentCount: 5,
+      status: "partial",
+      evidenceArtifact:
+        "PIIA assignment register with per-contributor signature status and counsel confirmatory-assignment tracker",
+    },
+    recommendation:
+      "Have all four unsigned contributors execute a PIIA with present and future invention assignment, and obtain confirmatory assignments or work-for-hire documentation from counsel for the two early contractors. Route unsigned contributors off production access until the register shows full signature coverage.",
+    executiveOwner: "General Counsel",
+    evidenceArtifact:
+      "PIIA assignment register, counsel confirmatory-assignment tracker, and production-access revocation checklist",
+    estimatedRemediationCostUsd: 7500,
+    estimatedAnnualRevenueAtRiskUsd: 300000,
+    targetRemediationDate: "2026-06-30",
+    discoveredAt: "2026-06-09",
+    resolvedAt: null,
   },
 ];
 

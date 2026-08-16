@@ -679,6 +679,20 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.intellectualPropertyAssignmentEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                IP assignments
+              </dt>
+              <dd>
+                {finding.intellectualPropertyAssignmentEvidence.contributorClass} ·{" "}
+                {finding.intellectualPropertyAssignmentEvidence.signedAssignmentCount} of{" "}
+                {finding.intellectualPropertyAssignmentEvidence.totalContributors} signed ·{" "}
+                {finding.intellectualPropertyAssignmentEvidence.status} ·{" "}
+                {finding.intellectualPropertyAssignmentEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.recoveryExerciseEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

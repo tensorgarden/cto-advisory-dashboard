@@ -81,7 +81,8 @@ export type DueDiligenceDomain =
   | "security_supply_chain"
   | "data_ai_governance"
   | "operational_resilience"
-  | "leadership_accountability";
+  | "leadership_accountability"
+  | "intellectual_property";
 
 export type FindingSeverity = "critical" | "high" | "medium" | "low";
 
@@ -177,6 +178,16 @@ export interface ComplianceCertificationEvidence {
   evidenceArtifact: string;
 }
 
+export type IpAssignmentCoverageStatus = "missing" | "partial" | "verified";
+
+export interface IntellectualPropertyAssignmentEvidence {
+  contributorClass: string;
+  totalContributors: number;
+  signedAssignmentCount: number;
+  status: IpAssignmentCoverageStatus;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -194,6 +205,7 @@ export interface DueDiligenceFinding {
   openSourceLicenseReview: OpenSourceLicenseReview | null;
   penetrationTestEvidence: PenetrationTestEvidence | null;
   complianceCertificationEvidence: ComplianceCertificationEvidence | null;
+  intellectualPropertyAssignmentEvidence: IntellectualPropertyAssignmentEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

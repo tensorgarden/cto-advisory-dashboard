@@ -14,6 +14,7 @@ import type {
   DataroomStatus,
   DueDiligenceDomain,
   InvestorMateriality,
+  IpAssignmentCoverageStatus,
   KeyPersonHandoverReadiness,
   OpenSourceLicenseReviewStatus,
   PenetrationTestStatus,
@@ -147,8 +148,8 @@ describe("Fractional CTO domain invariants", () => {
 // ─── Due-diligence finding domain invariants ──────────────────────────────────
 
 describe("Due-diligence findings", () => {
-  it("has exactly 6 findings covering every diligence domain", () => {
-    expect(demoDueDiligenceFindings.length).toBe(6);
+  it("has exactly 7 findings covering every diligence domain", () => {
+    expect(demoDueDiligenceFindings.length).toBe(7);
     const domains = new Set(demoDueDiligenceFindings.map((f) => f.domain));
     const expected: DueDiligenceDomain[] = [
       "delivery_health",
@@ -157,6 +158,7 @@ describe("Due-diligence findings", () => {
       "data_ai_governance",
       "operational_resilience",
       "leadership_accountability",
+      "intellectual_property",
     ];
     for (const domain of expected) {
       expect(domains.has(domain)).toBe(true);
@@ -829,6 +831,63 @@ describe("Due-diligence findings", () => {
           framework.includes("ai act")
       )
     ).toBe(true);
+  });
+  it("makes IP assignment coverage evidence-backed", () => {
+    const ipEvidence = demoDueDiligenceFindings.filter(
+      (finding) => finding.intellectualPropertyAssignmentEvidence !== null
+    );
+    const validStatuses: IpAssignmentCoverageStatus[] = [
+      "missing",
+      "partial",
+      "verified",
+    ];
+
+    expect(ipEvidence.length).toBeGreaterThan(0);
+    for (const finding of ipEvidence) {
+      const evidence = finding.intellectualPropertyAssignmentEvidence;
+
+      expect(finding.domain).toBe("intellectual_property");
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(evidence.contributorClass.length).toBeGreaterThan(10);
+      expect(Number.isInteger(evidence.totalContributors)).toBe(true);
+      expect(Number.isInteger(evidence.signedAssignmentCount)).toBe(true);
+      expect(evidence.totalContributors).toBeGreaterThan(0);
+      expect(evidence.signedAssignmentCount).toBeGreaterThanOrEqual(0);
+      expect(evidence.signedAssignmentCount).toBeLessThanOrEqual(
+        evidence.totalContributors
+      );
+      expect(validStatuses).toContain(evidence.status);
+      expect(evidence.evidenceArtifact.toLowerCase()).toMatch(
+        /piia|assignment|register/
+      );
+    }
+  });
+
+  it("keeps unsigned-contributor IP gaps in active investor review", () => {
+    const incompleteAssignments = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.intellectualPropertyAssignmentEvidence;
+      return (
+        evidence !== null &&
+        evidence.signedAssignmentCount < evidence.totalContributors
+      );
+    });
+
+    expect(incompleteAssignments.length).toBeGreaterThan(0);
+    for (const finding of incompleteAssignments) {
+      const evidence = finding.intellectualPropertyAssignmentEvidence;
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact} ${evidence.evidenceArtifact}`.toLowerCase();
+
+      expect(finding.investorMateriality).toBe("blocking");
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(/assignment|piia|work-for-hire/);
+    }
   });
 
 });
