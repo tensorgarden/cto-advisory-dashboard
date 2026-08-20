@@ -693,6 +693,27 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.dataProcessingAgreementEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Data processing
+              </dt>
+              <dd>
+                {finding.dataProcessingAgreementEvidence.signedDpaCount} of{" "}
+                {finding.dataProcessingAgreementEvidence.subprocessorCount}{" "}
+                subprocessor DPAs signed ·{" "}
+                {finding.dataProcessingAgreementEvidence.status.replaceAll(
+                  "_",
+                  " "
+                )}{" "}
+                · vendor rights mechanisms{" "}
+                {finding.dataProcessingAgreementEvidence.vendorRightsMechanismVerified
+                  ? "verified"
+                  : "unverified"}{" "}
+                · {finding.dataProcessingAgreementEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.recoveryExerciseEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

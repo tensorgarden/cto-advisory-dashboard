@@ -12,6 +12,7 @@ import {
 import type {
   ComplianceCertificationStatus,
   DataroomStatus,
+  DataProcessingAgreementStatus,
   DueDiligenceDomain,
   InvestorMateriality,
   IpAssignmentCoverageStatus,
@@ -887,6 +888,68 @@ describe("Due-diligence findings", () => {
       expect(["open", "mitigating"]).toContain(finding.status);
       expect(finding.dataroomStatus).not.toBe("ready");
       expect(proof).toMatch(/assignment|piia|work-for-hire/);
+    }
+  });
+
+  it("makes data-processing agreement coverage evidence-backed", () => {
+    const dpaEvidence = demoDueDiligenceFindings.filter(
+      (finding) => finding.dataProcessingAgreementEvidence !== null
+    );
+    const validStatuses: DataProcessingAgreementStatus[] = [
+      "not_started",
+      "partial",
+      "verified",
+    ];
+
+    expect(dpaEvidence.length).toBeGreaterThan(0);
+    for (const finding of dpaEvidence) {
+      const evidence = finding.dataProcessingAgreementEvidence;
+
+      expect(finding.domain).toBe("data_ai_governance");
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(Number.isInteger(evidence.subprocessorCount)).toBe(true);
+      expect(Number.isInteger(evidence.signedDpaCount)).toBe(true);
+      expect(evidence.subprocessorCount).toBeGreaterThan(0);
+      expect(evidence.signedDpaCount).toBeGreaterThanOrEqual(0);
+      expect(evidence.signedDpaCount).toBeLessThanOrEqual(
+        evidence.subprocessorCount
+      );
+      expect(validStatuses).toContain(evidence.status);
+      if (evidence.status === "verified") {
+        expect(evidence.signedDpaCount).toBe(evidence.subprocessorCount);
+        expect(evidence.vendorRightsMechanismVerified).toBe(true);
+      }
+      expect(evidence.evidenceArtifact.toLowerCase()).toMatch(
+        /subprocessor|dpa/
+      );
+    }
+  });
+
+  it("keeps incomplete DPA coverage and unverified vendor rights mechanisms in active investor review", () => {
+    const incompleteDpaCoverage = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.dataProcessingAgreementEvidence;
+      return (
+        evidence !== null &&
+        (evidence.signedDpaCount < evidence.subprocessorCount ||
+          !evidence.vendorRightsMechanismVerified)
+      );
+    });
+
+    expect(incompleteDpaCoverage.length).toBeGreaterThan(0);
+    for (const finding of incompleteDpaCoverage) {
+      const evidence = finding.dataProcessingAgreementEvidence;
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact} ${evidence.evidenceArtifact}`.toLowerCase();
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(/dpa|data-processing|subprocessor/);
+      expect(proof).toMatch(/dsar|deletion|rights/);
     }
   });
 

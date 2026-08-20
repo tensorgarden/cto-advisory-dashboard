@@ -188,6 +188,19 @@ export interface IntellectualPropertyAssignmentEvidence {
   evidenceArtifact: string;
 }
 
+export type DataProcessingAgreementStatus =
+  | "not_started"
+  | "partial"
+  | "verified";
+
+export interface DataProcessingAgreementEvidence {
+  subprocessorCount: number;
+  signedDpaCount: number;
+  status: DataProcessingAgreementStatus;
+  vendorRightsMechanismVerified: boolean;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -206,6 +219,7 @@ export interface DueDiligenceFinding {
   penetrationTestEvidence: PenetrationTestEvidence | null;
   complianceCertificationEvidence: ComplianceCertificationEvidence | null;
   intellectualPropertyAssignmentEvidence: IntellectualPropertyAssignmentEvidence | null;
+  dataProcessingAgreementEvidence: DataProcessingAgreementEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

@@ -517,6 +517,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
     intellectualPropertyAssignmentEvidence: null,
+    dataProcessingAgreementEvidence: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -562,6 +563,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
     intellectualPropertyAssignmentEvidence: null,
+    dataProcessingAgreementEvidence: null,
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Obtain written change-of-control consent from the vendor. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -620,6 +622,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
         "SOC 2 Type II gap assessment, control-mapping register, and audit firm engagement letter",
     },
     intellectualPropertyAssignmentEvidence: null,
+    dataProcessingAgreementEvidence: null,
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes. Complete counsel disposition for the two copyleft packages before marking the security evidence pack ready. Commission an independent third-party penetration test of the production platform and CI/CD pipeline, with a verified retest of any high or critical findings, before diligence Q&A. Map controls to the SOC 2 Type II trust service criteria and book the external audit window with the selected firm before diligence Q&A.",
     executiveOwner: "CISO Office",
@@ -642,7 +645,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorQuestion:
       "Can the team show AI customer-response controls, confidence thresholds, and human review before scaling the pilot?",
     boardReadyUpdate:
-      "Board update: AI support scaling remains a watchlist item until Head of Customer Experience owns confidence thresholds, human review, and customer disclosure artifacts in the dataroom.",
+      "Board update: AI support scaling remains a watchlist item until Head of Customer Experience owns confidence thresholds, human review, customer disclosure artifacts, and subprocessor DPA coverage in the dataroom.",
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
     criticalVendorDependency: null,
@@ -661,10 +664,18 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
         "Privacy compliance gap register with EU AI Act applicability assessment and DPO engagement note",
     },
     intellectualPropertyAssignmentEvidence: null,
+    dataProcessingAgreementEvidence: {
+      subprocessorCount: 6,
+      signedDpaCount: 3,
+      status: "partial",
+      vendorRightsMechanismVerified: false,
+      evidenceArtifact:
+        "Subprocessor register with signed DPA coverage tracker and vendor DSAR/deletion mechanism test log",
+    },
     recommendation:
-      "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center. Begin a GDPR/CCPA readiness assessment and document EU AI Act applicability for the chatbot before scaling the pilot.",
+      "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center. Begin a GDPR/CCPA readiness assessment and document EU AI Act applicability for the chatbot before scaling the pilot. Execute signed data-processing agreements with the three uncovered subprocessors that handle chatbot transcripts and complete vendor-run DSAR/deletion drills before marking the privacy pack dataroom-ready.",
     executiveOwner: "Head of Customer Experience",
-    evidenceArtifact: "AI response QA sample, low-confidence escalation SOP, published disclosure draft, and privacy gap register with EU AI Act applicability assessment",
+    evidenceArtifact: "AI response QA sample, low-confidence escalation SOP, published disclosure draft, subprocessor DPA register, and vendor DSAR/deletion mechanism test log",
     estimatedRemediationCostUsd: 9500,
     estimatedAnnualRevenueAtRiskUsd: 180000,
     targetRemediationDate: "2026-06-28",
@@ -700,6 +711,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
     intellectualPropertyAssignmentEvidence: null,
+    dataProcessingAgreementEvidence: null,
     recommendation:
       "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a recovery exercise within 30 days and measure actual restoration against the 4-hour RTO and 1-hour RPO.",
     executiveOwner: "Director of Engineering Operations",
@@ -732,6 +744,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     penetrationTestEvidence: null,
     complianceCertificationEvidence: null,
     intellectualPropertyAssignmentEvidence: null,
+    dataProcessingAgreementEvidence: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",
@@ -772,6 +785,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       evidenceArtifact:
         "PIIA assignment register with per-contributor signature status and counsel confirmatory-assignment tracker",
     },
+    dataProcessingAgreementEvidence: null,
     recommendation:
       "Have all four unsigned contributors execute a PIIA with present and future invention assignment, and obtain confirmatory assignments or work-for-hire documentation from counsel for the two early contractors. Route unsigned contributors off production access until the register shows full signature coverage.",
     executiveOwner: "General Counsel",
