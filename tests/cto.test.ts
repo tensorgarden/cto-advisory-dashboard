@@ -19,6 +19,7 @@ import type {
   KeyPersonHandoverReadiness,
   OpenSourceLicenseReviewStatus,
   PenetrationTestStatus,
+  ProductionAccessAuditStatus,
   RecoveryExerciseOutcome,
   TechCategory,
   VendorContractTransferStatus,
@@ -952,5 +953,67 @@ describe("Due-diligence findings", () => {
       expect(proof).toMatch(/dsar|deletion|rights/);
     }
   });
+});
 
+describe("Production access audit trail", () => {
+  it("makes production access audit coverage evidence-backed", () => {
+    const auditRecords = demoDueDiligenceFindings.filter(
+      (finding) => finding.productionAccessAuditEvidence !== null
+    );
+    const validStatuses: ProductionAccessAuditStatus[] = [
+      "not_reviewed",
+      "partial",
+      "verified",
+    ];
+
+    expect(auditRecords.length).toBeGreaterThan(0);
+    for (const finding of auditRecords) {
+      const evidence = finding.productionAccessAuditEvidence;
+
+      expect(finding.domain).toBe("security_supply_chain");
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(evidence.system.length).toBeGreaterThan(15);
+      expect(Number.isInteger(evidence.reviewedEventCount)).toBe(true);
+      expect(Number.isInteger(evidence.privilegedAccessEventCount)).toBe(true);
+      expect(evidence.reviewedEventCount).toBeGreaterThan(0);
+      expect(evidence.privilegedAccessEventCount).toBeGreaterThanOrEqual(0);
+      expect(evidence.privilegedAccessEventCount).toBeLessThanOrEqual(
+        evidence.reviewedEventCount
+      );
+      expect(validStatuses).toContain(evidence.status);
+      if (evidence.status === "not_reviewed") {
+        expect(evidence.lastReviewDate).toBeNull();
+      } else {
+        expect(evidence.lastReviewDate).not.toBeNull();
+        expect(Number.isNaN(Date.parse(evidence.lastReviewDate ?? ""))).toBe(
+          false
+        );
+      }
+      expect(evidence.evidenceArtifact.toLowerCase()).toMatch(/access|audit|log/);
+    }
+  });
+
+  it("keeps incomplete production access reviews in active investor review", () => {
+    const incompleteReviews = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.productionAccessAuditEvidence;
+      return evidence !== null && evidence.status !== "verified";
+    });
+
+    expect(incompleteReviews.length).toBeGreaterThan(0);
+    for (const finding of incompleteReviews) {
+      const evidence = finding.productionAccessAuditEvidence;
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact} ${evidence.evidenceArtifact}`.toLowerCase();
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(/production|access|audit trail/);
+      expect(proof).toMatch(/actor|timestamp|ticket|when/);
+    }
+  });
 });

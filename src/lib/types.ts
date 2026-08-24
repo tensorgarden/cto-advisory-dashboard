@@ -201,6 +201,20 @@ export interface DataProcessingAgreementEvidence {
   evidenceArtifact: string;
 }
 
+export type ProductionAccessAuditStatus =
+  | "not_reviewed"
+  | "partial"
+  | "verified";
+
+export interface ProductionAccessAuditEvidence {
+  system: string;
+  reviewedEventCount: number;
+  privilegedAccessEventCount: number;
+  lastReviewDate: string | null;
+  status: ProductionAccessAuditStatus;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -220,6 +234,7 @@ export interface DueDiligenceFinding {
   complianceCertificationEvidence: ComplianceCertificationEvidence | null;
   intellectualPropertyAssignmentEvidence: IntellectualPropertyAssignmentEvidence | null;
   dataProcessingAgreementEvidence: DataProcessingAgreementEvidence | null;
+  productionAccessAuditEvidence: ProductionAccessAuditEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

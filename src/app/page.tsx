@@ -714,6 +714,25 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.productionAccessAuditEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Access trail
+              </dt>
+              <dd>
+                {finding.productionAccessAuditEvidence.system} ·{" "}
+                {finding.productionAccessAuditEvidence.reviewedEventCount} events reviewed ·{" "}
+                {finding.productionAccessAuditEvidence.privilegedAccessEventCount} privileged ·{" "}
+                {finding.productionAccessAuditEvidence.status.replaceAll("_", " ")} ·{" "}
+                {finding.productionAccessAuditEvidence.lastReviewDate
+                  ? `last review ${new Date(
+                      finding.productionAccessAuditEvidence.lastReviewDate
+                    ).toLocaleDateString("en-US")}`
+                  : "review not yet run"}{" "}
+                · {finding.productionAccessAuditEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.recoveryExerciseEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">
