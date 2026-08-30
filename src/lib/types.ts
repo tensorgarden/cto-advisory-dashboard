@@ -215,6 +215,21 @@ export interface ProductionAccessAuditEvidence {
   evidenceArtifact: string;
 }
 
+export type DataRetentionScheduleStatus = "not_started" | "partial" | "verified";
+
+export interface DataRetentionClassSchedule {
+  dataClass: string;
+  retentionDays: number;
+  disposalMethod: string;
+}
+
+export interface DataRetentionScheduleEvidence {
+  retentionClasses: DataRetentionClassSchedule[];
+  status: DataRetentionScheduleStatus;
+  backupDeletionMethod: string;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -235,6 +250,7 @@ export interface DueDiligenceFinding {
   intellectualPropertyAssignmentEvidence: IntellectualPropertyAssignmentEvidence | null;
   dataProcessingAgreementEvidence: DataProcessingAgreementEvidence | null;
   productionAccessAuditEvidence: ProductionAccessAuditEvidence | null;
+  dataRetentionScheduleEvidence: DataRetentionScheduleEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

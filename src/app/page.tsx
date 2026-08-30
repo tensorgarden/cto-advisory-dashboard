@@ -714,6 +714,26 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.dataRetentionScheduleEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Data retention
+              </dt>
+              <dd>
+                {finding.dataRetentionScheduleEvidence.retentionClasses
+                  .map(
+                    (schedule) =>
+                      `${schedule.dataClass}: ${schedule.retentionDays} days`
+                  )
+                  .join(" · ")} ·{" "}
+                {finding.dataRetentionScheduleEvidence.status.replaceAll(
+                  "_",
+                  " "
+                )} · backup disposal: {finding.dataRetentionScheduleEvidence.backupDeletionMethod} ·{" "}
+                {finding.dataRetentionScheduleEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.productionAccessAuditEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

@@ -13,6 +13,7 @@ import type {
   ComplianceCertificationStatus,
   DataroomStatus,
   DataProcessingAgreementStatus,
+  DataRetentionScheduleStatus,
   DueDiligenceDomain,
   InvestorMateriality,
   IpAssignmentCoverageStatus,
@@ -1014,6 +1015,69 @@ describe("Production access audit trail", () => {
       expect(finding.dataroomStatus).not.toBe("ready");
       expect(proof).toMatch(/production|access|audit trail/);
       expect(proof).toMatch(/actor|timestamp|ticket|when/);
+    }
+  });
+});
+
+describe("Data retention schedule", () => {
+  it("makes per-class retention and disposal evidence explicit", () => {
+    const retentionRecords = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.dataRetentionScheduleEvidence;
+      return evidence !== undefined && evidence !== null;
+    });
+    const validStatuses: DataRetentionScheduleStatus[] = [
+      "not_started",
+      "partial",
+      "verified",
+    ];
+
+    expect(retentionRecords.length).toBeGreaterThan(0);
+    for (const finding of retentionRecords) {
+      const evidence = finding.dataRetentionScheduleEvidence;
+
+      expect(finding.domain).toBe("data_ai_governance");
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      expect(evidence.retentionClasses.length).toBeGreaterThan(0);
+      expect(validStatuses).toContain(evidence.status);
+      expect(evidence.backupDeletionMethod.length).toBeGreaterThan(20);
+      expect(evidence.evidenceArtifact.toLowerCase()).toMatch(
+        /retention|deletion|disposal|backup/
+      );
+
+      for (const schedule of evidence.retentionClasses) {
+        expect(schedule.dataClass.length).toBeGreaterThan(3);
+        expect(Number.isInteger(schedule.retentionDays)).toBe(true);
+        expect(schedule.retentionDays).toBeGreaterThan(0);
+        expect(schedule.disposalMethod.length).toBeGreaterThan(15);
+      }
+    }
+  });
+
+  it("keeps incomplete retention coverage in active investor review", () => {
+    const incompleteSchedules = demoDueDiligenceFindings.filter((finding) => {
+      const evidence = finding.dataRetentionScheduleEvidence;
+      return (
+        evidence !== undefined &&
+        evidence !== null &&
+        evidence.status !== "verified"
+      );
+    });
+
+    expect(incompleteSchedules.length).toBeGreaterThan(0);
+    for (const finding of incompleteSchedules) {
+      const evidence = finding.dataRetentionScheduleEvidence;
+      expect(evidence).not.toBeNull();
+      if (!evidence) continue;
+
+      const proof =
+        `${finding.recommendation} ${finding.evidenceArtifact} ${evidence.evidenceArtifact} ${evidence.backupDeletionMethod}`.toLowerCase();
+
+      expect(["open", "mitigating"]).toContain(finding.status);
+      expect(finding.dataroomStatus).not.toBe("ready");
+      expect(proof).toMatch(/retention|disposal|deletion/);
+      expect(proof).toContain("backup");
     }
   });
 });
