@@ -734,6 +734,30 @@ function DiligenceFindingCard({ finding }: { finding: DueDiligenceFinding }) {
               </dd>
             </div>
           )}
+          {finding.incidentResponseReadinessEvidence && (
+            <div className="flex gap-2">
+              <dt className="min-w-20 font-semibold text-slate-500">
+                Incident response
+              </dt>
+              <dd>
+                {finding.incidentResponseReadinessEvidence.status.replaceAll(
+                  "_",
+                  " "
+                )} · commander:{" "}
+                {finding.incidentResponseReadinessEvidence.incidentCommander ??
+                  "not assigned"} · notification target:{" "}
+                {finding.incidentResponseReadinessEvidence.customerNotificationSlaMinutes
+                  ? `${finding.incidentResponseReadinessEvidence.customerNotificationSlaMinutes} min`
+                  : "not set"} ·{" "}
+                {finding.incidentResponseReadinessEvidence.lastTabletopDate
+                  ? `last tabletop ${new Date(
+                      finding.incidentResponseReadinessEvidence.lastTabletopDate
+                    ).toLocaleDateString("en-US")}`
+                  : "tabletop not yet run"} ·{" "}
+                {finding.incidentResponseReadinessEvidence.evidenceArtifact}
+              </dd>
+            </div>
+          )}
           {finding.productionAccessAuditEvidence && (
             <div className="flex gap-2">
               <dt className="min-w-20 font-semibold text-slate-500">

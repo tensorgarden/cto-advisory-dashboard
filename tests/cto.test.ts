@@ -14,6 +14,7 @@ import type {
   DataroomStatus,
   DataProcessingAgreementStatus,
   DataRetentionScheduleStatus,
+  IncidentResponseReadinessStatus,
   DueDiligenceDomain,
   InvestorMateriality,
   IpAssignmentCoverageStatus,
@@ -1079,5 +1080,56 @@ describe("Data retention schedule", () => {
       expect(proof).toMatch(/retention|disposal|deletion/);
       expect(proof).toContain("backup");
     }
+  });
+});
+
+
+describe('Incident response readiness', () => {
+  it('requires a named commander, notification SLA, and tabletop evidence record', () => {
+    const finding = demoDueDiligenceFindings.find(
+      (f) => f.domain === 'operational_resilience'
+    );
+
+    expect(finding).toBeDefined();
+    if (!finding) return;
+
+    const evidence = finding.incidentResponseReadinessEvidence;
+
+    expect(evidence).toBeDefined();
+    if (!evidence) return;
+
+    const validStatuses: IncidentResponseReadinessStatus[] = [
+      'missing',
+      'drafted',
+      'tested',
+    ];
+    expect(validStatuses).toContain(evidence.status);
+    expect(evidence.status).toBe('drafted');
+    expect(evidence.incidentCommander).toBeTruthy();
+    expect(evidence.customerNotificationSlaMinutes).toBeGreaterThan(0);
+    expect(evidence.lastTabletopDate).toBeNull();
+    expect(evidence.evidenceArtifact.toLowerCase()).toMatch(
+      /incident|response|tabletop/
+    );
+  });
+
+  it('keeps an untested response plan in active investor review', () => {
+    const finding = demoDueDiligenceFindings.find(
+      (f) => f.domain === 'operational_resilience'
+    );
+
+    expect(finding).toBeDefined();
+    if (!finding) return;
+
+    const evidence = finding.incidentResponseReadinessEvidence;
+
+    expect(evidence).toBeDefined();
+    if (!evidence) return;
+
+    const proof = `${finding.recommendation} ${finding.evidenceArtifact}`.toLowerCase();
+    expect(evidence.status).not.toBe('tested');
+    expect([ 'open', 'mitigating' ]).toContain(finding.status);
+    expect(finding.dataroomStatus).not.toBe('ready');
+    expect(proof).toMatch(/incident response|tabletop/);
   });
 });

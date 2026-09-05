@@ -230,6 +230,19 @@ export interface DataRetentionScheduleEvidence {
   evidenceArtifact: string;
 }
 
+export type IncidentResponseReadinessStatus =
+  | "missing"
+  | "drafted"
+  | "tested";
+
+export interface IncidentResponseReadinessEvidence {
+  status: IncidentResponseReadinessStatus;
+  incidentCommander: string | null;
+  customerNotificationSlaMinutes: number | null;
+  lastTabletopDate: string | null;
+  evidenceArtifact: string;
+}
+
 export interface DueDiligenceFinding {
   id: string;
   domain: DueDiligenceDomain;
@@ -251,6 +264,7 @@ export interface DueDiligenceFinding {
   dataProcessingAgreementEvidence: DataProcessingAgreementEvidence | null;
   productionAccessAuditEvidence: ProductionAccessAuditEvidence | null;
   dataRetentionScheduleEvidence: DataRetentionScheduleEvidence | null;
+  incidentResponseReadinessEvidence: IncidentResponseReadinessEvidence | null;
   recommendation: string;
   executiveOwner: string;
   evidenceArtifact: string;

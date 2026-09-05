@@ -520,6 +520,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataProcessingAgreementEvidence: null,
     productionAccessAuditEvidence: null,
     dataRetentionScheduleEvidence: null,
+    incidentResponseReadinessEvidence: null,
     recommendation:
       "Institute blameless post-incident reviews with a shared RCA template within 2 sprints. Tag every P1/P2 incident against a failure taxonomy so patterns become visible to leadership.",
     executiveOwner: "VP Engineering",
@@ -568,6 +569,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataProcessingAgreementEvidence: null,
     productionAccessAuditEvidence: null,
     dataRetentionScheduleEvidence: null,
+    incidentResponseReadinessEvidence: null,
     recommendation:
       "Wrap the address-validation call in a circuit breaker (3 failures in 60s → open for 30s) and add a degraded-mode fallback that accepts unverified addresses with a manual-review flag. Obtain written change-of-control consent from the vendor. Name and cross-train a backup operator, then run a checkout-failure handover drill within 1 sprint.",
     executiveOwner: "Head of Platform",
@@ -637,6 +639,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
         "Production access audit export with named actors, accessed objects, timestamps, ticket links, and exception register",
     },
     dataRetentionScheduleEvidence: null,
+    incidentResponseReadinessEvidence: null,
     recommendation:
       "Enable branch protection on main with required PR reviews for `.github/workflows/*`. Pin GitHub Actions to commit SHAs. Add a CI step that diffs workflow files against an allowlist and blocks unapproved changes. Complete counsel disposition for the two copyleft packages before marking the security evidence pack ready. Commission an independent third-party penetration test of the production platform and CI/CD pipeline, with a verified retest of any high or critical findings, before diligence Q&A. Map controls to the SOC 2 Type II trust service criteria and book the external audit window with the selected firm before diligence Q&A. Export production access logs with named actors, accessed objects, timestamps, and ticket linkage; complete the access review and close the shared-admin exception before marking the security evidence pack ready.",
     executiveOwner: "CISO Office",
@@ -714,6 +717,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
       evidenceArtifact:
         "Data retention schedule, disposal-job run report, backup rotation evidence, and restore-exclusion test log",
     },
+    incidentResponseReadinessEvidence: null,
     recommendation:
       "Add a confidence-score check before surfacing AI-generated answers to customers. Route responses below 0.85 confidence to a human-review queue. Publish an AI-usage disclosure in the help center. Begin a GDPR/CCPA readiness assessment and document EU AI Act applicability for the chatbot before scaling the pilot. Execute signed data-processing agreements with the three uncovered subprocessors that handle chatbot transcripts and complete vendor-run DSAR/deletion drills. Publish per-class retention periods, verify disposal jobs, and run a restore-exclusion test for encrypted backups before marking the privacy pack dataroom-ready.",
     executiveOwner: "Head of Customer Experience",
@@ -736,7 +740,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     investorQuestion:
       "Can operations prove every production surface has named responders, escalation evidence, and tabletop rehearsal coverage?",
     boardReadyUpdate:
-      "Board update: operational resilience coverage is incomplete outside backend; Engineering Ops owns escalation coverage and tabletop rehearsal proof for the next risk review.",
+      "Board update: operational resilience coverage is incomplete outside backend; Engineering Ops owns escalation coverage, incident commander assignment, customer-notification timing, and tabletop proof for the next risk review.",
     investorMateriality: "watchlist",
     dataroomStatus: "partial",
     criticalVendorDependency: null,
@@ -756,10 +760,18 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataProcessingAgreementEvidence: null,
     productionAccessAuditEvidence: null,
     dataRetentionScheduleEvidence: null,
+    incidentResponseReadinessEvidence: {
+      status: "drafted",
+      incidentCommander: "Director of Engineering Operations",
+      customerNotificationSlaMinutes: 60,
+      lastTabletopDate: null,
+      evidenceArtifact:
+        "Incident response plan draft with named incident commander, customer notification timeline, and tabletop exercise schedule",
+    },
     recommendation:
-      "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Run a recovery exercise within 30 days and measure actual restoration against the 4-hour RTO and 1-hour RPO.",
+      "Extend on-call rotation to one frontend and one data-platform engineer per week. Define severity levels and escalation policies in a shared runbook. Name an incident commander, publish the customer-notification timeline, and run a tabletop exercise within 30 days; measure actual restoration against the 4-hour RTO and 1-hour RPO.",
     executiveOwner: "Director of Engineering Operations",
-    evidenceArtifact: "On-call coverage matrix, escalation policy, and signed recovery-exercise result with RTO/RPO measurements",
+    evidenceArtifact: "On-call coverage matrix, escalation policy, incident response plan with named commander and customer-notification timeline, and signed recovery/tabletop-exercise result with RTO/RPO measurements",
     estimatedRemediationCostUsd: 7000,
     estimatedAnnualRevenueAtRiskUsd: 150000,
     targetRemediationDate: "2026-07-02",
@@ -791,6 +803,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataProcessingAgreementEvidence: null,
     productionAccessAuditEvidence: null,
     dataRetentionScheduleEvidence: null,
+    incidentResponseReadinessEvidence: null,
     recommendation:
       "Adopt a lightweight RAPID framework for all architecture decisions. Every ADR must list a Recommender, Approver, and a 6-month review date. This finding is accepted as a process change, not a technical fix.",
     executiveOwner: "CTO",
@@ -834,6 +847,7 @@ export const demoDueDiligenceFindings: DueDiligenceFinding[] = [
     dataProcessingAgreementEvidence: null,
     productionAccessAuditEvidence: null,
     dataRetentionScheduleEvidence: null,
+    incidentResponseReadinessEvidence: null,
     recommendation:
       "Have all four unsigned contributors execute a PIIA with present and future invention assignment, and obtain confirmatory assignments or work-for-hire documentation from counsel for the two early contractors. Route unsigned contributors off production access until the register shows full signature coverage.",
     executiveOwner: "General Counsel",
